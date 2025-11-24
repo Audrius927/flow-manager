@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            ImportOldDatabaseSeeder::class,
+            //ImportOldDatabaseSeeder::class,
             PartStorageSeeder::class,
         ]);
     }
