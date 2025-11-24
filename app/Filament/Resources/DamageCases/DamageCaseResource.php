@@ -79,4 +79,67 @@ class DamageCaseResource extends Resource
             'edit' => EditDamageCase::route('/{record}/edit'),
         ];
     }
+
+    public static function canViewAny(): bool
+    {
+        $user = auth()->user();
+
+        if ($user?->system_role === SystemRole::Admin) {
+            return true;
+        }
+
+        $permissions = app(\App\Services\DamageCases\DamageCaseFieldPermissionResolver::class);
+
+        return $permissions->canViewAny($user, ...$permissions->getConfiguredFields());
+    }
+
+    public static function canView($record): bool
+    {
+        $user = auth()->user();
+
+        if ($user?->system_role === SystemRole::Admin) {
+            return true;
+        }
+
+        if (!$user) {
+            return false;
+        }
+
+        $permissions = app(\App\Services\DamageCases\DamageCaseFieldPermissionResolver::class);
+
+        if (!$permissions->canViewAny($user, ...$permissions->getConfiguredFields())) {
+            return false;
+        }
+
+        // Patikrinti ar įrašas yra priskirtas vartotojui
+        return $record->users()->where('users.id', $user->id)->exists();
+    }
+
+    public static function canEdit($record): bool
+    {
+        $user = auth()->user();
+
+        if ($user?->system_role === SystemRole::Admin) {
+            return true;
+        }
+
+        if (!$user) {
+            return false;
+        }
+
+        $permissions = app(\App\Services\DamageCases\DamageCaseFieldPermissionResolver::class);
+
+        if (!$permissions->canEditAny($user)) {
+            return false;
+        }
+
+        // Patikrinti ar įrašas yra priskirtas vartotojui
+        return $record->users()->where('users.id', $user->id)->exists();
+    }
+
+    public static function canDelete($record): bool
+    {
+        // Tik admin gali trinti
+        return auth()->user()?->system_role === SystemRole::Admin;
+    }
 }

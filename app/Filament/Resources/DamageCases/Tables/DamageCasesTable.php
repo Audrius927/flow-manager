@@ -166,9 +166,27 @@ class DamageCasesTable
                     ->label('Peržiūra')
                     ->icon('heroicon-o-eye')
                     ->url(fn ($record) => DamageCaseResource::getUrl('view', ['record' => $record]))
-                    ->visible($isAdmin || $permissions->canViewAny($user, ...$permissions->getConfiguredFields())),
+                    ->visible(function ($record) use ($isAdmin, $permissions, $user) {
+                        if ($isAdmin) {
+                            return true;
+                        }
+                        if (!$permissions->canViewAny($user, ...$permissions->getConfiguredFields())) {
+                            return false;
+                        }
+                        // Patikrinti ar įrašas yra priskirtas vartotojui
+                        return $record->users()->where('users.id', $user->id)->exists();
+                    }),
                 EditAction::make()
-                    ->visible($permissions->canEditAny($user)),
+                    ->visible(function ($record) use ($isAdmin, $permissions, $user) {
+                        if ($isAdmin) {
+                            return true;
+                        }
+                        if (!$permissions->canEditAny($user)) {
+                            return false;
+                        }
+                        // Patikrinti ar įrašas yra priskirtas vartotojui
+                        return $record->users()->where('users.id', $user->id)->exists();
+                    }),
             ])
             ->toolbarActions([
             ])

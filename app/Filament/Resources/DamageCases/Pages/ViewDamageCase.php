@@ -44,8 +44,43 @@ class ViewDamageCase extends ViewRecord
             return true;
         }
 
+        if (!$user) {
+            return false;
+        }
+
         $permissions = app(DamageCaseFieldPermissionResolver::class);
 
-        return $permissions->canViewAny($user, ...$permissions->getConfiguredFields());
+        if (!$permissions->canViewAny($user, ...$permissions->getConfiguredFields())) {
+            return false;
+        }
+
+        // Patikrinti ar įrašas yra priskirtas vartotojui
+        if (isset($parameters['record'])) {
+            $record = $parameters['record'];
+            if ($record instanceof \App\Models\DamageCase) {
+                return $record->users()->where('users.id', $user->id)->exists();
+            }
+        }
+
+        return true;
+    }
+
+    public function mount(int | string $record): void
+    {
+        parent::mount($record);
+
+        $user = auth()->user();
+
+        // Jei ne admin, patikrinti ar įrašas yra priskirtas vartotojui
+        if ($user && $user->system_role !== SystemRole::Admin) {
+            if (!$this->record->users()->where('users.id', $user->id)->exists()) {
+                abort(403, 'Neturite prieigos prie šio įrašo.');
+            }
+        }
+    }
+
+    public function getBreadcrumbs(): array
+    {
+        return [];
     }
 }
