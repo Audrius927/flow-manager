@@ -52,6 +52,9 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make()
                     ->label('Automobilių detalės')
                     ->collapsed(),
+                NavigationGroup::make()
+                    ->label('Sistemos nustatymai')
+                    ->collapsed(),
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([

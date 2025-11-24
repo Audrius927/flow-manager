@@ -16,7 +16,7 @@ class ImportOldDatabaseSeeder extends Seeder
      *     'driver' => 'mysql',
      *     'host' => env('OLD_DB_HOST', '127.0.0.1'),
      *     'port' => env('OLD_DB_PORT', '3306'),
-     *     'database' => env('OLD_DB_DATABASE', 'geauta_lrv'),
+     *     'database' => env('OLD_DB_DATABASE', ''),
      *     'username' => env('OLD_DB_USERNAME', 'root'),
      *     'password' => env('OLD_DB_PASSWORD', ''),
      *     ...
