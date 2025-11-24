@@ -76,6 +76,34 @@
     .fi-ta-table tbody tr:hover {
         @apply bg-gray-50 dark:bg-gray-800/50;
     }
+
+    /* Friendly file upload dropzone */
+    .ea-upload-slot .filepond--root {
+        @apply rounded-2xl border-2 border-dashed border-emerald-400/70 bg-emerald-50/80 px-6 py-8 text-center dark:border-emerald-400/40 dark:bg-emerald-500/5;
+    }
+
+    .ea-upload-slot .filepond--root.filepond--drip,
+    .ea-upload-slot .filepond--root.filepond--hover {
+        @apply border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10;
+    }
+
+    .ea-upload-slot .filepond--drop-label {
+        @apply flex flex-col items-center gap-3 text-base font-medium text-gray-700 dark:text-gray-200;
+    }
+
+    .ea-upload-slot .filepond--label-action {
+        @apply inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow-md hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300;
+    }
+
+    .ea-upload-slot .filepond--label-action::before {
+        content: '+';
+        font-size: 1.25rem;
+        line-height: 1;
+    }
+
+    .ea-upload-slot .filepond--drop-label label {
+        @apply text-sm font-normal text-gray-500 dark:text-gray-300;
+    }
 }
 
 /* Custom color and utility enhancements */

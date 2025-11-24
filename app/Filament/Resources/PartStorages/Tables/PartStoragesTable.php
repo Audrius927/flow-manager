@@ -10,6 +10,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
@@ -57,6 +58,10 @@ class PartStoragesTable
                     ->label('Kėbulo tipas')
                     ->placeholder('Nenurodytas')
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('year')
+                    ->label('Metai')
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('quantity')
                     ->label('Kiekis')
                     ->numeric()
@@ -156,10 +161,22 @@ class PartStoragesTable
                     ->label('Variklis')
                     ->relationship('engine', 'title')
                     ->placeholder('Visi varikliai'),
-                SelectFilter::make('fuel_type_id')
-                    ->label('Kuro tipas')
-                    ->relationship('fuelType', 'title')
-                    ->placeholder('Visi kuro tipai'),
+                Filter::make('year')
+                    ->label('Metai')
+                    ->form([
+                        TextInput::make('year')
+                            ->numeric()
+                            ->minValue(1900)
+                            ->maxValue(now()->year + 1)
+                            ->placeholder('Pvz., 2018'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['year'] ?? null,
+                            fn (Builder $query, $year) => $query->where('year', $year),
+                        );
+                    })
+                    ->indicateUsing(fn (array $data): ?string => !empty($data['year']) ? "Metai: {$data['year']}" : null),
                 SelectFilter::make('body_type_id')
                     ->label('Kėbulo tipas')
                     ->relationship('bodyType', 'title')

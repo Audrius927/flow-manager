@@ -38,6 +38,7 @@ return new class extends Migration
                 ->constrained('body_types')
                 ->nullOnDelete()
                 ->comment('Suderinamas su kėbulo tipu');
+            $table->integer('year')->nullable()->comment('Metai');
             $table->integer('quantity')->default(1)->comment('Kiekis sandėlyje');
             $table->text('notes')->nullable()->comment('Pastabos');
             $table->timestamps();

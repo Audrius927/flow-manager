@@ -70,5 +70,21 @@ class DamageCase extends Model
     {
         return $this->belongsTo(CarModel::class, 'car_model_id');
     }
+
+    /**
+     * Get all documents attached to the damage case.
+     */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(DamageCaseDocument::class);
+    }
+
+    /**
+     * Get all photos attached to the damage case.
+     */
+    public function photos(): HasMany
+    {
+        return $this->hasMany(DamageCasePhoto::class);
+    }
 }
 

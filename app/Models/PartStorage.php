@@ -18,6 +18,7 @@ class PartStorage extends Model
         'engine_id',
         'fuel_type_id',
         'body_type_id',
+        'year',
         'quantity',
         'notes',
     ];

@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\DamageCases\Schemas;
 
+use App\Models\DamageCase;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
@@ -132,6 +134,54 @@ class DamageCaseForm
                             ->columnSpan(1),
                     ])
                     ->columns(4)
+                    ->columnSpanFull(),
+                Section::make('Prisegti failai')
+                    ->description('Dokumentai ir nuotraukos, susiję su žalos byla')
+                    ->schema([
+                        FileUpload::make('documents_uploads')
+                            ->label('Dokumentai')
+                            ->multiple()
+                            ->disk('private')
+                            ->directory('damage-cases/documents')
+                            ->preserveFilenames()
+                            ->placeholder('Paspauskite „Įkelti dokumentus“ arba nutempkite čia')
+                            ->panelLayout('grid')
+                            ->loadingIndicatorPosition('center')
+                            ->uploadButtonPosition('center')
+                            ->openable()
+                            ->downloadable()
+                            ->maxFiles(5)
+                            ->default(fn (?DamageCase $record) => $record?->documents->pluck('path')->all())
+                            ->dehydrateStateUsing(fn ($state) => $state ?? [])
+                            ->extraAttributes([
+                                'class' => 'ea-upload-slot ea-upload-slot--docs',
+                            ])
+                            ->helperText('Galima pridėti kelis PDF ar kitus dokumentus.'),
+                        FileUpload::make('photos_uploads')
+                            ->label('Nuotraukos')
+                            ->multiple()
+                            ->disk('private')
+                            ->directory('damage-cases/photos')
+                            ->image()
+                            ->imageEditor()
+                            ->reorderable()
+                            ->placeholder('Paspauskite „Įkelti nuotraukas“ arba nutempkite čia')
+                            ->panelLayout('grid')
+                            ->loadingIndicatorPosition('center')
+                            ->uploadButtonPosition('center')
+                            ->openable()
+                            ->downloadable()
+                            ->maxFiles(5)
+                            ->default(fn (?DamageCase $record) => $record?->photos->pluck('path')->all())
+                            ->dehydrateStateUsing(fn ($state) => $state ?? [])
+                            ->helperText('Galite įkelti nuotraukas tiesiai iš telefono.')
+                            ->extraAttributes([
+                                'class' => 'ea-upload-slot ea-upload-slot--photos',
+                                'capture' => 'environment',
+                                'accept' => 'image/*',
+                            ]),
+                    ])
+                    ->columns(2)
                     ->columnSpanFull(),
             ]);
     }

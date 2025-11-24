@@ -35,6 +35,13 @@ class PartStorageForm
                             ->default(1)
                             ->required()
                             ->columnSpan(1),
+                        TextInput::make('year')
+                            ->label('Metai')
+                            ->numeric()
+                            ->minValue(1900)
+                            ->maxValue(now()->year + 1)
+                            ->placeholder('Pvz., 2018')
+                            ->columnSpan(1),
                         SelectTree::make('part_category_id')
                             ->label('Kategorija')
                             ->relationship('partCategory', 'title', 'parent_id')

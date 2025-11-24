@@ -23,6 +23,11 @@ class PartStorageInfolist
                             ->label('Kategorija')
                             ->badge()
                             ->color('primary'),
+                        TextEntry::make('year')
+                            ->label('Metai')
+                            ->badge()
+                            ->color('warning')
+                            ->placeholder('Nenurodyta'),
                         TextEntry::make('quantity')
                             ->label('Kiekis')
                             ->badge()
