@@ -1,0 +1,38 @@
+[
+    {
+        "id": 2,
+        "title": "Benzinas"
+    },
+    {
+        "id": 3,
+        "title": "Benzinas \/ dujos"
+    },
+    {
+        "id": 4,
+        "title": "Benzinas \/ elektra"
+    },
+    {
+        "id": 8,
+        "title": "Bioetanolis (E85)"
+    },
+    {
+        "id": 1,
+        "title": "Dyzelinas"
+    },
+    {
+        "id": 7,
+        "title": "Dyzelinas \/ dujos"
+    },
+    {
+        "id": 6,
+        "title": "Dyzelinas \/ elektra"
+    },
+    {
+        "id": 5,
+        "title": "Elektra"
+    },
+    {
+        "id": 9,
+        "title": "Kita"
+    }
+]

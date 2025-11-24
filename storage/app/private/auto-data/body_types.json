@@ -1,0 +1,50 @@
+[
+    {
+        "id": 2,
+        "title": "Hečbekas"
+    },
+    {
+        "id": 8,
+        "title": "Kabrioletas"
+    },
+    {
+        "id": 12,
+        "title": "Kita"
+    },
+    {
+        "id": 7,
+        "title": "Komercinis"
+    },
+    {
+        "id": 6,
+        "title": "Kupė (Coupe)"
+    },
+    {
+        "id": 10,
+        "title": "Limuzinas"
+    },
+    {
+        "id": 11,
+        "title": "Pikapas"
+    },
+    {
+        "id": 9,
+        "title": "Roadster"
+    },
+    {
+        "id": 1,
+        "title": "Sedanas"
+    },
+    {
+        "id": 3,
+        "title": "Universalas"
+    },
+    {
+        "id": 4,
+        "title": "Vienatūris"
+    },
+    {
+        "id": 5,
+        "title": "Visureigis"
+    }
+]
