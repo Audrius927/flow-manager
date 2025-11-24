@@ -26,6 +26,11 @@ class PartStorageForm
                             ->placeholder('PVZ: 7M3 123 456')
                             ->maxLength(100)
                             ->columnSpan(1),
+                        TextInput::make('vin_code')
+                            ->label('VIN kodas')
+                            ->placeholder('PVZ: WVWZZZ1JZXW000001')
+                            ->maxLength(50)
+                            ->columnSpan(1),
 
                         TextInput::make('quantity')
                             ->label('Kiekis')

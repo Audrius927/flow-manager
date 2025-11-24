@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\DamageCases\Schemas;
 
+use App\Models\DamageCase;
+use App\Services\DamageCases\DamageCaseFieldPermissionResolver;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -10,10 +13,13 @@ class DamageCaseInfolist
 {
     public static function configure(Schema $schema): Schema
     {
+        $user = auth()->user();
+        $permissions = app(DamageCaseFieldPermissionResolver::class);
+        $canView = fn (string ...$fields): bool => $permissions->canViewAny($user, ...$fields);
+
         return $schema
             ->components([
-                Section::make('Pagrindinė informacija')
-                    ->description('Draudimo ir žalos duomenys')
+                Section::make('Žalos bylos informacija')
                     ->components([
                         TextEntry::make('damage_number')
                             ->label('Žalos nr.')
@@ -21,44 +27,39 @@ class DamageCaseInfolist
                             ->color('primary')
                             ->copyable()
                             ->copyMessage('Gedimo numeris nukopijuotas')
-                            ->columnSpan(1),
+                            ->visible($canView('damage_number')),
                         TextEntry::make('insurance_company')
                             ->label('Draudimo kompanija')
                             ->badge()
                             ->color('gray')
                             ->placeholder('Nenurodyta')
-                            ->columnSpan(1),
+                            ->visible($canView('insurance_company')),
                         TextEntry::make('product')
                             ->label('Produktas')
                             ->placeholder('Nenurodytas')
-                            ->columnSpanFull(),
+                            ->visible($canView('product')),
                         TextEntry::make('order_date')
                             ->label('Užsakymo data')
                             ->date('Y-m-d')
                             ->placeholder('Nenurodyta')
-                            ->columnSpan(1),
+                            ->visible($canView('order_date')),
                         TextEntry::make('received_at')
                             ->label('Perėmimo data / laikas')
                             ->dateTime('Y-m-d H:i')
                             ->placeholder('Nenurodyta')
-                            ->columnSpan(1),
-                    ])
-                    ->columns(2),
-                Section::make('Automobilio informacija')
-                    ->description('Automobilio duomenys')
-                    ->components([
+                            ->visible($canView('received_at')),
                         TextEntry::make('carMark.title')
                             ->label('Markė')
                             ->badge()
                             ->color('gray')
                             ->placeholder('Nenurodyta')
-                            ->columnSpan(1),
+                            ->visible($canView('car_mark_id')),
                         TextEntry::make('carModel.title')
                             ->label('Modelis')
                             ->badge()
                             ->color('gray')
                             ->placeholder('Nenurodytas')
-                            ->columnSpan(1),
+                            ->visible($canView('car_model_id')),
                         TextEntry::make('license_plate')
                             ->label('Valst nr.')
                             ->badge()
@@ -66,101 +67,107 @@ class DamageCaseInfolist
                             ->copyable()
                             ->copyMessage('Valstybinis numeris nukopijuotas')
                             ->placeholder('Nenurodytas')
-                            ->columnSpan(1),
-                    ])
-                    ->columns(2)
-                    ->collapsible(),
-                Section::make('Kliento informacija')
-                    ->description('Kliento kontaktinė informacija')
-                    ->components([
+                            ->visible($canView('license_plate')),
                         TextEntry::make('first_name')
                             ->label('Vardas')
                             ->placeholder('Nenurodytas')
-                            ->columnSpan(1),
+                            ->visible($canView('first_name')),
                         TextEntry::make('last_name')
                             ->label('Pavardė')
                             ->placeholder('Nenurodyta')
-                            ->columnSpan(1),
+                            ->visible($canView('last_name')),
                         TextEntry::make('phone')
                             ->label('Tel nr.')
                             ->placeholder('Nenurodytas')
-                            ->columnSpanFull(),
-                    ])
-                    ->columns(2)
-                    ->collapsible(),
-                Section::make('Sandėliavimo informacija')
-                    ->description('Informacija apie sandėliavimą')
-                    ->components([
+                            ->visible($canView('phone')),
                         TextEntry::make('received_location')
                             ->label('Perėmimo vieta (adresas)')
                             ->placeholder('Nenurodyta')
-                            ->columnSpan(1),
+                            ->visible($canView('received_location')),
                         TextEntry::make('storage_location')
                             ->label('Saugojimo vieta')
                             ->badge()
                             ->color('info')
                             ->placeholder('Nenurodyta')
-                            ->columnSpan(1),
+                            ->visible($canView('storage_location')),
                         TextEntry::make('removed_from_storage_at')
                             ->label('Išvežtas iš saugojimo vietos (Data)')
                             ->date('Y-m-d')
                             ->placeholder('Nenurodyta')
-                            ->columnSpan(1),
+                            ->visible($canView('removed_from_storage_at')),
                         TextEntry::make('returned_to_storage_at')
                             ->label('Grąžintas į saugojimo vietą (Data)')
                             ->date('Y-m-d')
                             ->placeholder('Nenurodyta')
-                            ->columnSpan(1),
+                            ->visible($canView('returned_to_storage_at')),
                         TextEntry::make('returned_to_client_at')
                             ->label('Grąžintas klientui (Data)')
                             ->date('Y-m-d')
                             ->placeholder('Nenurodyta')
-                            ->columnSpan(1),
-                    ])
-                    ->columns(3)
-                    ->collapsible(),
-                Section::make('Remonto informacija')
-                    ->description('Remonto proceso duomenys')
-                    ->components([
+                            ->visible($canView('returned_to_client_at')),
                         TextEntry::make('repair_company')
                             ->label('Remonto įmonė')
                             ->placeholder('Nenurodyta')
-                            ->columnSpan(1),
+                            ->visible($canView('repair_company')),
                         TextEntry::make('planned_repair_start')
                             ->label('Planuojama remonto pradžia (Data)')
                             ->date('Y-m-d')
                             ->placeholder('Nenurodyta')
-                            ->columnSpan(1),
+                            ->visible($canView('planned_repair_start')),
                         TextEntry::make('planned_repair_end')
                             ->label('Planuojama remonto pabaiga (Data)')
                             ->date('Y-m-d')
                             ->placeholder('Nenurodyta')
-                            ->columnSpan(1),
+                            ->visible($canView('planned_repair_end')),
                         TextEntry::make('finished_at')
                             ->label('Baigta')
                             ->date('Y-m-d')
                             ->placeholder('Nenurodyta')
-                            ->columnSpan(1),
+                            ->visible($canView('finished_at')),
+                        ViewEntry::make('photos_gallery')
+                            ->label('Nuotraukos')
+                            ->view('filament.damage-cases.infolist.photos-gallery')
+                            ->viewData(fn (DamageCase $record) => [
+                                'photos' => $record->photos()
+                                    ->latest()
+                                    ->get()
+                                    ->map(fn ($photo) => [
+                                        'id' => $photo->id,
+                                        'url' => $photo->path ? route('files.private.show', ['path' => $photo->path]) : null,
+                                        'name' => $photo->original_name ?? basename($photo->path ?? ''),
+                                        'uploaded_at' => optional($photo->created_at)->format('Y-m-d H:i'),
+                                    ])
+                                    ->filter(fn ($photo) => filled($photo['url']))
+                                    ->values(),
+                            ])
+                            ->columnSpanFull()
+                            ->visible($canView('photos')),
+                        ViewEntry::make('documents_list')
+                            ->label('Dokumentai')
+                            ->view('filament.damage-cases.infolist.documents-list')
+                            ->viewData(fn (DamageCase $record) => [
+                                'documents' => $record->documents()
+                                    ->latest()
+                                    ->get()
+                                    ->map(fn ($document) => [
+                                        'id' => $document->id,
+                                        'url' => $document->path ? route('files.private.show', ['path' => $document->path]) : null,
+                                        'name' => $document->original_name ?? basename($document->path ?? ''),
+                                        'uploaded_at' => optional($document->created_at)->format('Y-m-d H:i'),
+                                    ])
+                                    ->filter(fn ($document) => filled($document['url']))
+                                    ->values(),
+                            ])
+                            ->columnSpanFull()
+                            ->visible($canView('documents')),
                     ])
-                    ->columns(2)
-                    ->collapsible(),
-                Section::make('Sistemos informacija')
-                    ->description('Metaduomenys apie įrašą')
-                    ->components([
-                        TextEntry::make('created_at')
-                            ->label('Sukurta')
-                            ->dateTime('Y-m-d H:i:s')
-                            ->placeholder('Nėra duomenų')
-                            ->columnSpan(1),
-                        TextEntry::make('updated_at')
-                            ->label('Atnaujinta')
-                            ->dateTime('Y-m-d H:i:s')
-                            ->placeholder('Nėra duomenų')
-                            ->columnSpan(1),
+                    ->columns([
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 3,
+                        'xl' => 4,
                     ])
-                    ->columns(2)
-                    ->collapsed()
-                    ->collapsible(),
+                    ->columnSpanFull(),
             ]);
     }
 }

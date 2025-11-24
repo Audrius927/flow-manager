@@ -22,6 +22,8 @@ return [
         'planned_repair_start' => 'Planuojama remonto pradžia (Data)',
         'planned_repair_end' => 'Planuojama remonto pabaiga (Data)',
         'finished_at' => 'Baigta',
+        'documents' => 'Dokumentai',
+        'photos' => 'Nuotraukos',
     ],
 ];
 

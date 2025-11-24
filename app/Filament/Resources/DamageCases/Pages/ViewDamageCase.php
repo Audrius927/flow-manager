@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\DamageCases\Pages;
 
+use App\Enums\SystemRole;
 use App\Filament\Resources\DamageCases\DamageCaseResource;
+use App\Services\DamageCases\DamageCaseFieldPermissionResolver;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
@@ -22,8 +24,28 @@ class ViewDamageCase extends ViewRecord
 
     protected function getHeaderActions(): array
     {
+        $permissions = app(DamageCaseFieldPermissionResolver::class);
+        $user = auth()->user();
+
         return [
-            EditAction::make(),
+            EditAction::make()
+                ->visible(
+                    ($user?->system_role === SystemRole::Admin) ||
+                    $permissions->canEditAny($user)
+                ),
         ];
+    }
+
+    public static function canAccess(array $parameters = []): bool
+    {
+        $user = auth()->user();
+
+        if ($user?->system_role === SystemRole::Admin) {
+            return true;
+        }
+
+        $permissions = app(DamageCaseFieldPermissionResolver::class);
+
+        return $permissions->canViewAny($user, ...$permissions->getConfiguredFields());
     }
 }

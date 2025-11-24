@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\SystemRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -46,7 +47,17 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'system_role' => SystemRole::class,
         ];
+    }
+
+    public function hasSystemRole(SystemRole ...$roles): bool
+    {
+        if (! $this->system_role instanceof SystemRole) {
+            return false;
+        }
+
+        return in_array($this->system_role, $roles, true);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';
+@source '../../../../resources/views/vendor/filament-panels/**/*';
 
 /* Custom styling improvements */
 @layer components {
@@ -12,7 +13,7 @@
     
     /* Enhanced button styling with better shadows */
     .fi-btn {
-        @apply font-medium shadow-sm transition-all duration-200;
+        @apply font-medium shadow-sm transition-all duration-200 ;
     }
     
     .fi-btn:hover {
@@ -103,6 +104,16 @@
 
     .ea-upload-slot .filepond--drop-label label {
         @apply text-sm font-normal text-gray-500 dark:text-gray-300;
+    }
+
+    /* Sidebar active state */
+    .fi-sidebar .fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
+        @apply bg-emerald-500 text-white font-semibold;
+    }
+
+    .fi-sidebar .fi-sidebar-item.fi-active > .fi-sidebar-item-btn .fi-sidebar-item-icon,
+    .fi-sidebar .fi-sidebar-item.fi-active > .fi-sidebar-item-btn .fi-sidebar-item-label {
+        @apply text-white;
     }
 }
 

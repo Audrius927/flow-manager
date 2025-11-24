@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Roles;
 
+use App\Filament\Concerns\RestrictsSystemRole;
 use App\Filament\Resources\Roles\Pages\CreateRole;
 use App\Filament\Resources\Roles\Pages\EditRole;
 use App\Filament\Resources\Roles\Pages\ListRoles;
@@ -17,6 +18,8 @@ use Filament\Tables\Table;
 
 class RoleResource extends Resource
 {
+    use RestrictsSystemRole;
+
     protected static ?string $model = Role::class;
 
     protected static ?string $recordTitleAttribute = 'name';

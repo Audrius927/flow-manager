@@ -20,6 +20,7 @@ class PartStorage extends Model
         'body_type_id',
         'year',
         'quantity',
+        'vin_code',
         'notes',
     ];
 

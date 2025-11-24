@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\DamageCases\Pages;
 
+use App\Enums\SystemRole;
 use App\Filament\Resources\DamageCases\DamageCaseResource;
 use App\Models\DamageCaseDocument;
 use App\Models\DamageCasePhoto;
@@ -56,5 +57,10 @@ class CreateDamageCase extends CreateRecord
     public function getTitle(): string
     {
         return 'Naujas užsakymas';
+    }
+
+    public static function canAccess(array $parameters = []): bool
+    {
+        return auth()->user()?->system_role === SystemRole::Admin;
     }
 }

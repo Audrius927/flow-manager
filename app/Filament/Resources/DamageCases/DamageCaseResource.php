@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\DamageCases;
 
+use App\Enums\SystemRole;
+use App\Filament\Concerns\RestrictsSystemRole;
 use App\Filament\Resources\DamageCases\Pages\CreateDamageCase;
 use App\Filament\Resources\DamageCases\Pages\EditDamageCase;
 use App\Filament\Resources\DamageCases\Pages\ListDamageCases;
@@ -18,6 +20,15 @@ use Filament\Tables\Table;
 
 class DamageCaseResource extends Resource
 {
+    use RestrictsSystemRole;
+
+    protected static function allowedSystemRoles(): array
+    {
+        return [
+            SystemRole::Admin,
+            SystemRole::User,
+        ];
+    }
     protected static ?string $model = DamageCase::class;
 
     protected static ?string $recordTitleAttribute = 'damage_number';

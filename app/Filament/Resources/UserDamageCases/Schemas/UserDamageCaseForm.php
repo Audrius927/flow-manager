@@ -16,10 +16,11 @@ class UserDamageCaseForm
                     ->multiple()
                     ->options(function () {
                         return \App\Models\User::with('roles')
+                            ->where('system_role', \App\Enums\SystemRole::User)
                             ->get()
                             ->mapWithKeys(function ($user) {
                                 $roles = $user->roles->pluck('name')->join(', ');
-                                $label = $user->name;
+                                $label = $user->name ?: 'Be pavadinimo';
                                 if ($user->email) {
                                     $label .= ' (' . $user->email . ')';
                                 }

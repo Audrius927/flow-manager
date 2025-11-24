@@ -2,11 +2,13 @@
 
 namespace App\Filament\Widgets;
 
+use App\Enums\SystemRole;
 use App\Filament\Resources\DamageCases\DamageCaseResource;
 use App\Filament\Resources\PartStorages\PartStorageResource;
 use App\Filament\Resources\Roles\RoleResource;
 use App\Filament\Resources\UserDamageCases\UserDamageCaseResource;
 use Filament\Widgets\Widget;
+use Illuminate\Support\Facades\Auth;
 
 class QuickLinks extends Widget
 {
@@ -16,7 +18,9 @@ class QuickLinks extends Widget
 
     public function getCards(): array
     {
-        return [
+        $userRole = Auth::user()?->system_role;
+
+        $cards = [
             [
                 'title' => 'Užsakymų valdymas',
                 'url' => DamageCaseResource::getUrl(),
@@ -38,5 +42,13 @@ class QuickLinks extends Widget
                 'icon' => 'heroicon-o-shield-check',
             ],
         ];
+
+        if ($userRole instanceof SystemRole && $userRole === SystemRole::User) {
+            return [
+                $cards[0],
+            ];
+        }
+
+        return $cards;
     }
 }

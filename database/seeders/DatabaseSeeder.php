@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\SystemRole;
 use App\Models\User;
 use Hash;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,10 +23,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('qwer'),
+            'system_role' => SystemRole::Admin,
         ]);
 
         $this->call([
-            //ImportOldDatabaseSeeder::class,
+            ImportOldDatabaseSeeder::class,
             PartStorageSeeder::class,
         ]);
     }

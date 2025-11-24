@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\DamageCases\Pages;
 
+use App\Enums\SystemRole;
 use App\Filament\Resources\DamageCases\DamageCaseResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
@@ -12,9 +13,12 @@ class ListDamageCases extends ListRecords
 
     protected function getHeaderActions(): array
     {
+        $isAdmin = auth()->user()?->system_role === SystemRole::Admin;
+
         return [
             CreateAction::make()
-                ->label('Sukurti užsakymą'),
+                ->label('Sukurti užsakymą')
+                ->visible($isAdmin),
         ];
     }
 

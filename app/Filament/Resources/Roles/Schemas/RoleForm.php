@@ -30,7 +30,10 @@ class RoleForm
                             }
                         }),
                 ])
-                ->columns(2);
+                ->columns(2)
+                ->extraAttributes([
+                    'class' => 'rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4 shadow-sm',
+                ]);
         }
 
         return $schema
@@ -54,7 +57,12 @@ class RoleForm
                             ->disabled()
                             ->placeholder('Leidimai dar nesukonfigūruoti'),
                     ])
-                    ->columns(4)
+                    ->columns([
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 3,
+                        'xl' => 4,
+                    ])
                     ->columnSpanFull()
                     ->collapsible(),
             ]);

@@ -40,6 +40,7 @@ return new class extends Migration
                 ->comment('Suderinamas su kėbulo tipu');
             $table->integer('year')->nullable()->comment('Metai');
             $table->integer('quantity')->default(1)->comment('Kiekis sandėlyje');
+            $table->string('vin_code', 50)->nullable();
             $table->text('notes')->nullable()->comment('Pastabos');
             $table->timestamps();
 

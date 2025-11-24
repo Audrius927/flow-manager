@@ -19,6 +19,11 @@ class PartStorageInfolist
                         TextEntry::make('part_number')
                             ->label('Detalės numeris')
                             ->placeholder('Nenurodytas'),
+                        TextEntry::make('vin_code')
+                            ->label('VIN kodas')
+                            ->badge()
+                            ->color('success')
+                            ->placeholder('Nenurodytas'),
                         TextEntry::make('partCategory.title')
                             ->label('Kategorija')
                             ->badge()

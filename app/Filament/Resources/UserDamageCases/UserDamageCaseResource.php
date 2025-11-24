@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\UserDamageCases;
 
+use App\Filament\Concerns\RestrictsSystemRole;
 use App\Filament\Resources\UserDamageCases\Pages\ListUserDamageCases;
 use App\Filament\Resources\UserDamageCases\Schemas\UserDamageCaseForm;
 use App\Filament\Resources\UserDamageCases\Schemas\UserDamageCaseInfolist;
@@ -14,6 +15,8 @@ use Filament\Tables\Table;
 
 class UserDamageCaseResource extends Resource
 {
+    use RestrictsSystemRole;
+
     protected static ?string $model = UserDamageCase::class;
 
     protected static ?string $recordTitleAttribute = null;

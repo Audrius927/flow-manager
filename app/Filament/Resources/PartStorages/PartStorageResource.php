@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\PartStorages;
 
+use App\Enums\SystemRole;
+use App\Filament\Concerns\RestrictsSystemRole;
 use App\Filament\Resources\PartStorages\Pages\CreatePartStorage;
 use App\Filament\Resources\PartStorages\Pages\EditPartStorage;
 use App\Filament\Resources\PartStorages\Pages\ListPartStorages;
@@ -17,6 +19,8 @@ use Filament\Tables\Table;
 
 class PartStorageResource extends Resource
 {
+    use RestrictsSystemRole;
+
     protected static ?string $model = PartStorage::class;
 
     protected static ?string $recordTitleAttribute = 'part_number';

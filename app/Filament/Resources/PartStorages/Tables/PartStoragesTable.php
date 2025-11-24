@@ -10,7 +10,6 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
@@ -29,6 +28,12 @@ class PartStoragesTable
                     ->placeholder('Nenurodytas')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('vin_code')
+                    ->label('VIN kodas')
+                    ->placeholder('Nenurodytas')
+                    ->copyable()
+                    ->copyMessage('VIN kodas nukopijuotas')
+                    ->copyMessageDuration(1500),
                 TextColumn::make('partCategory.title')
                     ->label('Kategorija')
                     ->badge()
@@ -164,11 +169,19 @@ class PartStoragesTable
                 Filter::make('year')
                     ->label('Metai')
                     ->form([
-                        TextInput::make('year')
-                            ->numeric()
-                            ->minValue(1900)
-                            ->maxValue(now()->year + 1)
-                            ->placeholder('Pvz., 2018'),
+                        Select::make('year')
+                            ->label('Metai')
+                            ->options(function (): array {
+                                $years = range(1900, now()->year + 1);
+
+                                return collect($years)
+                                    ->sortDesc()
+                                    ->mapWithKeys(fn (int $year) => [$year => $year])
+                                    ->all();
+                            })
+                            ->optionsLimit(2000)
+                            ->searchable()
+                            ->placeholder('Visi metai'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(

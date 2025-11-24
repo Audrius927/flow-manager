@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\DamageCases\Schemas;
 
 use App\Models\DamageCase;
+use App\Services\DamageCases\DamageCaseFieldPermissionResolver;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
@@ -15,6 +16,11 @@ class DamageCaseForm
 {
     public static function configure(Schema $schema): Schema
     {
+        $user = auth()->user();
+        $permissions = app(DamageCaseFieldPermissionResolver::class);
+        $canView = fn (string ...$fields): bool => $permissions->canViewAny($user, ...$fields);
+        $canEdit = fn (string $field): bool => $permissions->canEditField($user, $field);
+
         return $schema
             ->components([
                 Section::make('Užsakymo informacija')
@@ -24,24 +30,34 @@ class DamageCaseForm
                             ->label('Žalos nr.')
                             ->unique(ignoreRecord: true)
                             ->maxLength(255)
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('damage_number'))
+                            ->disabled(fn () => ! $canEdit('damage_number')),
                         TextInput::make('insurance_company')
                             ->label('Draudimo kompanija')
                             ->maxLength(255)
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('insurance_company'))
+                            ->disabled(fn () => ! $canEdit('insurance_company')),
                         TextInput::make('product')
                             ->label('Produktas')
                             ->maxLength(255)
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('product'))
+                            ->disabled(fn () => ! $canEdit('product')),
                         DatePicker::make('order_date')
                             ->label('Užsakymo data')
                             ->displayFormat('Y-m-d')
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('order_date'))
+                            ->disabled(fn () => ! $canEdit('order_date')),
                         DateTimePicker::make('received_at')
                             ->label('Perėmimo data / laikas')
                             ->displayFormat('Y-m-d H:i')
                             ->timezone('Europe/Vilnius')
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('received_at'))
+                            ->disabled(fn () => ! $canEdit('received_at')),
                         Select::make('car_mark_filter')
                             ->label('Markė')
                             ->options(\App\Models\CarMark::pluck('title', 'id'))
@@ -57,7 +73,9 @@ class DamageCaseForm
                             ->reactive()
                             ->afterStateUpdated(fn ($set) => $set('car_model_id', null))
                             ->dehydrated(false)
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('car_mark_id'))
+                            ->disabled(fn () => ! $canEdit('car_mark_id')),
                         Select::make('car_model_id')
                             ->label('Modelis')
                             ->options(function ($get, $record) {
@@ -76,62 +94,95 @@ class DamageCaseForm
                             ->searchable()
                             ->preload()
                             ->placeholder('Pirma pasirinkite markę')
-                            ->disabled(fn ($get) => !$get('car_mark_filter'))
+                            ->disabled(function ($get) use ($canEdit) {
+                                if (! $get('car_mark_filter')) {
+                                    return true;
+                                }
+
+                                return ! $canEdit('car_model_id');
+                            })
                             ->dehydrated()
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('car_model_id')),
                         TextInput::make('license_plate')
                             ->label('Valst nr.')
                             ->maxLength(20)
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('license_plate'))
+                            ->disabled(fn () => ! $canEdit('license_plate')),
                         TextInput::make('first_name')
                             ->label('Vardas')
                             ->maxLength(100)
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('first_name'))
+                            ->disabled(fn () => ! $canEdit('first_name')),
                         TextInput::make('last_name')
                             ->label('Pavardė')
                             ->maxLength(100)
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('last_name'))
+                            ->disabled(fn () => ! $canEdit('last_name')),
                         TextInput::make('phone')
                             ->label('Tel nr.')
                             ->tel()
                             ->maxLength(20)
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('phone'))
+                            ->disabled(fn () => ! $canEdit('phone')),
                         TextInput::make('received_location')
                             ->label('Perėmimo vieta (adresas)')
                             ->maxLength(255)
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('received_location'))
+                            ->disabled(fn () => ! $canEdit('received_location')),
                         TextInput::make('storage_location')
                             ->label('Saugojimo vieta')
                             ->maxLength(255)
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('storage_location'))
+                            ->disabled(fn () => ! $canEdit('storage_location')),
                         DatePicker::make('removed_from_storage_at')
                             ->label('Išvežtas iš saugojimo vietos (Data)')
                             ->displayFormat('Y-m-d')
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('removed_from_storage_at'))
+                            ->disabled(fn () => ! $canEdit('removed_from_storage_at')),
                         DatePicker::make('returned_to_storage_at')
                             ->label('Grąžintas į saugojimo vietą (Data)')
                             ->displayFormat('Y-m-d')
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('returned_to_storage_at'))
+                            ->disabled(fn () => ! $canEdit('returned_to_storage_at')),
                         DatePicker::make('returned_to_client_at')
                             ->label('Grąžintas klientui (Data)')
                             ->displayFormat('Y-m-d')
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('returned_to_client_at'))
+                            ->disabled(fn () => ! $canEdit('returned_to_client_at')),
                         TextInput::make('repair_company')
                             ->label('Remonto įmonė')
                             ->maxLength(255)
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('repair_company'))
+                            ->disabled(fn () => ! $canEdit('repair_company')),
                         DatePicker::make('planned_repair_start')
                             ->label('Planuojama remonto pradžia (Data)')
                             ->displayFormat('Y-m-d')
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('planned_repair_start'))
+                            ->disabled(fn () => ! $canEdit('planned_repair_start')),
                         DatePicker::make('planned_repair_end')
                             ->label('Planuojama remonto pabaiga (Data)')
                             ->displayFormat('Y-m-d')
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('planned_repair_end'))
+                            ->disabled(fn () => ! $canEdit('planned_repair_end')),
                         DatePicker::make('finished_at')
                             ->label('Baigta')
                             ->displayFormat('Y-m-d')
-                            ->columnSpan(1),
+                            ->columnSpan(1)
+                            ->visible($canView('finished_at'))
+                            ->disabled(fn () => ! $canEdit('finished_at')),
                     ])
                     ->columns(4)
                     ->columnSpanFull(),
@@ -144,18 +195,21 @@ class DamageCaseForm
                             ->disk('private')
                             ->directory('damage-cases/documents')
                             ->preserveFilenames()
+                            ->visibility('private')
                             ->placeholder('Paspauskite „Įkelti dokumentus“ arba nutempkite čia')
-                            ->panelLayout('grid')
                             ->loadingIndicatorPosition('center')
                             ->uploadButtonPosition('center')
                             ->openable()
                             ->downloadable()
                             ->maxFiles(5)
-                            ->default(fn (?DamageCase $record) => $record?->documents->pluck('path')->all())
+                            ->afterStateHydrated(function (callable $set, ?DamageCase $record) {
+                                if ($record) {
+                                    $set('documents_uploads', $record->documents->pluck('path')->all());
+                                }
+                            })
                             ->dehydrateStateUsing(fn ($state) => $state ?? [])
-                            ->extraAttributes([
-                                'class' => 'ea-upload-slot ea-upload-slot--docs',
-                            ])
+                            ->visible($canView('documents'))
+                            ->disabled(fn () => ! $canEdit('documents'))
                             ->helperText('Galima pridėti kelis PDF ar kitus dokumentus.'),
                         FileUpload::make('photos_uploads')
                             ->label('Nuotraukos')
@@ -165,21 +219,26 @@ class DamageCaseForm
                             ->image()
                             ->imageEditor()
                             ->reorderable()
+                            ->visibility('private')
                             ->placeholder('Paspauskite „Įkelti nuotraukas“ arba nutempkite čia')
-                            ->panelLayout('grid')
                             ->loadingIndicatorPosition('center')
                             ->uploadButtonPosition('center')
                             ->openable()
                             ->downloadable()
                             ->maxFiles(5)
-                            ->default(fn (?DamageCase $record) => $record?->photos->pluck('path')->all())
+                            ->afterStateHydrated(function (callable $set, ?DamageCase $record) {
+                                if ($record) {
+                                    $set('photos_uploads', $record->photos->pluck('path')->all());
+                                }
+                            })
                             ->dehydrateStateUsing(fn ($state) => $state ?? [])
                             ->helperText('Galite įkelti nuotraukas tiesiai iš telefono.')
                             ->extraAttributes([
-                                'class' => 'ea-upload-slot ea-upload-slot--photos',
                                 'capture' => 'environment',
                                 'accept' => 'image/*',
-                            ]),
+                            ])
+                            ->visible($canView('photos'))
+                            ->disabled(fn () => ! $canEdit('photos')),
                     ])
                     ->columns(2)
                     ->columnSpanFull(),

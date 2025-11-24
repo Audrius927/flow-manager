@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\DamageCases\Pages;
 
+use App\Enums\SystemRole;
 use App\Filament\Resources\DamageCases\DamageCaseResource;
 use App\Models\DamageCaseDocument;
 use App\Models\DamageCasePhoto;
+use App\Services\DamageCases\DamageCaseFieldPermissionResolver;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
@@ -68,7 +70,21 @@ class EditDamageCase extends EditRecord
     {
         return [
             ViewAction::make(),
-            DeleteAction::make(),
+            DeleteAction::make()
+                ->visible(auth()->user()?->system_role === SystemRole::Admin),
         ];
+    }
+
+    public static function canAccess(array $parameters = []): bool
+    {
+        $user = auth()->user();
+
+        if ($user?->system_role === SystemRole::Admin) {
+            return true;
+        }
+
+        $permissions = app(DamageCaseFieldPermissionResolver::class);
+
+        return $permissions->canEditAny($user);
     }
 }
