@@ -35,7 +35,7 @@
     }
     
     .fi-input:focus {
-        @apply ring-2 ring-indigo-500 border-indigo-500 shadow-md;
+        @apply ring-2 ring-emerald-500 border-emerald-500 shadow-md;
     }
     
     /* Enhanced badge styling */
@@ -82,12 +82,12 @@
 @layer utilities {
     /* Primary color improvements */
     .fi-color-primary-600 {
-        @apply bg-indigo-600;
+        @apply bg-emerald-600;
     }
     
     /* Enhanced primary button hover */
     .fi-btn-primary:hover {
-        @apply bg-indigo-700 shadow-lg;
+        @apply bg-emerald-700 shadow-lg;
     }
     
     /* Better success color */

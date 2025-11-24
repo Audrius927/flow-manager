@@ -13,12 +13,12 @@ class EditDamageCase extends EditRecord
 
     public function getHeading(): string
     {
-        return 'Redaguoti gedimų atvejį';
+        return 'Redaguoti užsakymą';
     }
 
     public function getTitle(): string
     {
-        return 'Redaguoti gedimų atvejį';
+        return 'Redaguoti užsakymą';
     }
 
     protected function getHeaderActions(): array

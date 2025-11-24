@@ -14,8 +14,8 @@ class ListUserDamageCases extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('Priskirti vartotoją')
-                ->modalHeading('Priskirti vartotoją gedimų atvejui')
+                ->label('Priskirti užsakymą')
+                ->modalHeading('Priskirti užsakymą gedimų atvejui')
                 ->modalSubmitActionLabel('Priskirti')
                 ->modalCancelActionLabel('Atšaukti')
                 ->mutateFormDataUsing(function (array $data): array {
@@ -33,7 +33,7 @@ class ListUserDamageCases extends ListRecords
                     if (empty($userIds)) {
                         \Filament\Notifications\Notification::make()
                             ->title('Klaida')
-                            ->body('Pasirinkite bent vieną vartotoją.')
+                            ->body('Pasirinkite bent vieną užsakymą.')
                             ->danger()
                             ->send();
                         return;
@@ -58,23 +58,23 @@ class ListUserDamageCases extends ListRecords
                     if ($created > 0) {
                         \Filament\Notifications\Notification::make()
                             ->title('Sėkmė')
-                            ->body("Sėkmingai priskirta {$created} vartotojų.")
+                            ->body("Sėkmingai priskirta {$created} užsakymų.")
                             ->success()
                             ->send();
                     } else {
                         \Filament\Notifications\Notification::make()
                             ->title('Informacija')
-                            ->body('Visi pasirinkti vartotojai jau buvo priskirti.')
+                            ->body('Visi pasirinkti užsakymai jau buvo priskirti.')
                             ->info()
                             ->send();
                     }
                 })
-                ->successNotificationTitle('Vartotojai sėkmingai priskirti'),
+                ->successNotificationTitle('Užsakymai sėkmingai priskirti'),
         ];
     }
 
     public function getHeading(): string
     {
-        return 'Vartotojų priskyrimai';
+        return 'Užsakymų priskyrimai';
     }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('car_models', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 255);
+            $table->string('title', 150);
             $table->foreignId('car_mark_id')->constrained('car_marks')->cascadeOnDelete();
             $table->timestamps();
             

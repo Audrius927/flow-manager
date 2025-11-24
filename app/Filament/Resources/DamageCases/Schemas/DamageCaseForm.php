@@ -15,36 +15,31 @@ class DamageCaseForm
     {
         return $schema
             ->components([
-                Section::make('Pagrindinė informacija')
-                    ->description('Draudimo ir gedimo atvejo duomenys')
-                    ->components([
+                Section::make('Užsakymo informacija')
+                    ->description('Visi laukai vienoje formoje')
+                    ->schema([
                         TextInput::make('damage_number')
-                            ->label('Gedimo numeris')
+                            ->label('Žalos nr.')
                             ->unique(ignoreRecord: true)
                             ->maxLength(255)
                             ->columnSpan(1),
                         TextInput::make('insurance_company')
-                            ->label('Draudimo bendrovė')
+                            ->label('Draudimo kompanija')
                             ->maxLength(255)
                             ->columnSpan(1),
                         TextInput::make('product')
                             ->label('Produktas')
                             ->maxLength(255)
-                            ->columnSpanFull(),
+                            ->columnSpan(1),
                         DatePicker::make('order_date')
                             ->label('Užsakymo data')
                             ->displayFormat('Y-m-d')
                             ->columnSpan(1),
                         DateTimePicker::make('received_at')
-                            ->label('Gavimo data ir laikas')
+                            ->label('Perėmimo data / laikas')
                             ->displayFormat('Y-m-d H:i')
                             ->timezone('Europe/Vilnius')
                             ->columnSpan(1),
-                    ])
-                    ->columns(2),
-                Section::make('Automobilio informacija')
-                    ->description('Automobilio duomenys')
-                    ->components([
                         Select::make('car_mark_filter')
                             ->label('Markė')
                             ->options(\App\Models\CarMark::pluck('title', 'id'))
@@ -83,15 +78,9 @@ class DamageCaseForm
                             ->dehydrated()
                             ->columnSpan(1),
                         TextInput::make('license_plate')
-                            ->label('Valstybinis numeris')
+                            ->label('Valst nr.')
                             ->maxLength(20)
-                            ->columnSpanFull(),
-                    ])
-                    ->columns(2)
-                    ->collapsible(),
-                Section::make('Kliento informacija')
-                    ->description('Kliento kontaktinė informacija')
-                    ->components([
+                            ->columnSpan(1),
                         TextInput::make('first_name')
                             ->label('Vardas')
                             ->maxLength(100)
@@ -101,61 +90,49 @@ class DamageCaseForm
                             ->maxLength(100)
                             ->columnSpan(1),
                         TextInput::make('phone')
-                            ->label('Telefono numeris')
+                            ->label('Tel nr.')
                             ->tel()
                             ->maxLength(20)
-                            ->columnSpanFull(),
-                    ])
-                    ->columns(2)
-                    ->collapsible(),
-                Section::make('Sandėliavimo informacija')
-                    ->description('Informacija apie sandėliavimą')
-                    ->components([
+                            ->columnSpan(1),
                         TextInput::make('received_location')
-                            ->label('Gavimo vieta')
+                            ->label('Perėmimo vieta (adresas)')
                             ->maxLength(255)
                             ->columnSpan(1),
                         TextInput::make('storage_location')
-                            ->label('Sandėlio vieta')
+                            ->label('Saugojimo vieta')
                             ->maxLength(255)
                             ->columnSpan(1),
                         DatePicker::make('removed_from_storage_at')
-                            ->label('Pašalinta iš sandėlio')
+                            ->label('Išvežtas iš saugojimo vietos (Data)')
                             ->displayFormat('Y-m-d')
                             ->columnSpan(1),
                         DatePicker::make('returned_to_storage_at')
-                            ->label('Grąžinta į sandėlį')
+                            ->label('Grąžintas į saugojimo vietą (Data)')
                             ->displayFormat('Y-m-d')
                             ->columnSpan(1),
                         DatePicker::make('returned_to_client_at')
-                            ->label('Grąžinta klientui')
+                            ->label('Grąžintas klientui (Data)')
                             ->displayFormat('Y-m-d')
                             ->columnSpan(1),
-                    ])
-                    ->columns(3)
-                    ->collapsible(),
-                Section::make('Remonto informacija')
-                    ->description('Remonto proceso duomenys')
-                    ->components([
                         TextInput::make('repair_company')
                             ->label('Remonto įmonė')
                             ->maxLength(255)
                             ->columnSpan(1),
                         DatePicker::make('planned_repair_start')
-                            ->label('Planuotas remonto pradžios data')
+                            ->label('Planuojama remonto pradžia (Data)')
                             ->displayFormat('Y-m-d')
                             ->columnSpan(1),
                         DatePicker::make('planned_repair_end')
-                            ->label('Planuotas remonto pabaigos data')
+                            ->label('Planuojama remonto pabaiga (Data)')
                             ->displayFormat('Y-m-d')
                             ->columnSpan(1),
                         DatePicker::make('finished_at')
-                            ->label('Baigimo data')
+                            ->label('Baigta')
                             ->displayFormat('Y-m-d')
                             ->columnSpan(1),
                     ])
-                    ->columns(2)
-                    ->collapsible(),
+                    ->columns(4)
+                    ->columnSpanFull(),
             ]);
     }
 }

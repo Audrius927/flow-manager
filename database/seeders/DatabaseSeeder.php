@@ -24,8 +24,9 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('qwer'),
         ]);
 
-        // $this->call([
-        //     ImportOldDatabaseSeeder::class,
-        // ]);
+        $this->call([
+            //ImportOldDatabaseSeeder::class,
+            PartStorageSeeder::class,
+        ]);
     }
 }

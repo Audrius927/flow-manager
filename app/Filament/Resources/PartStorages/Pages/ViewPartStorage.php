@@ -10,11 +10,6 @@ class ViewPartStorage extends ViewRecord
 {
     protected static string $resource = PartStorageResource::class;
 
-    public function getHeading(): string
-    {
-        return $this->record->storage_location ?? 'Detalių sandėliavimas';
-    }
-
     protected function getHeaderActions(): array
     {
         return [

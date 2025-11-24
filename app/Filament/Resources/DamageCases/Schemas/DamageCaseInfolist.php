@@ -13,17 +13,17 @@ class DamageCaseInfolist
         return $schema
             ->components([
                 Section::make('Pagrindinė informacija')
-                    ->description('Draudimo ir gedimo atvejo duomenys')
+                    ->description('Draudimo ir žalos duomenys')
                     ->components([
                         TextEntry::make('damage_number')
-                            ->label('Gedimo numeris')
+                            ->label('Žalos nr.')
                             ->badge()
                             ->color('primary')
                             ->copyable()
                             ->copyMessage('Gedimo numeris nukopijuotas')
                             ->columnSpan(1),
                         TextEntry::make('insurance_company')
-                            ->label('Draudimo bendrovė')
+                            ->label('Draudimo kompanija')
                             ->badge()
                             ->color('gray')
                             ->placeholder('Nenurodyta')
@@ -38,7 +38,7 @@ class DamageCaseInfolist
                             ->placeholder('Nenurodyta')
                             ->columnSpan(1),
                         TextEntry::make('received_at')
-                            ->label('Gavimo data ir laikas')
+                            ->label('Perėmimo data / laikas')
                             ->dateTime('Y-m-d H:i')
                             ->placeholder('Nenurodyta')
                             ->columnSpan(1),
@@ -60,7 +60,7 @@ class DamageCaseInfolist
                             ->placeholder('Nenurodytas')
                             ->columnSpan(1),
                         TextEntry::make('license_plate')
-                            ->label('Valstybinis numeris')
+                            ->label('Valst nr.')
                             ->badge()
                             ->color('info')
                             ->copyable()
@@ -82,7 +82,7 @@ class DamageCaseInfolist
                             ->placeholder('Nenurodyta')
                             ->columnSpan(1),
                         TextEntry::make('phone')
-                            ->label('Telefono numeris')
+                            ->label('Tel nr.')
                             ->placeholder('Nenurodytas')
                             ->columnSpanFull(),
                     ])
@@ -92,27 +92,27 @@ class DamageCaseInfolist
                     ->description('Informacija apie sandėliavimą')
                     ->components([
                         TextEntry::make('received_location')
-                            ->label('Gavimo vieta')
+                            ->label('Perėmimo vieta (adresas)')
                             ->placeholder('Nenurodyta')
                             ->columnSpan(1),
                         TextEntry::make('storage_location')
-                            ->label('Sandėlio vieta')
+                            ->label('Saugojimo vieta')
                             ->badge()
                             ->color('info')
                             ->placeholder('Nenurodyta')
                             ->columnSpan(1),
                         TextEntry::make('removed_from_storage_at')
-                            ->label('Pašalinta iš sandėlio')
+                            ->label('Išvežtas iš saugojimo vietos (Data)')
                             ->date('Y-m-d')
                             ->placeholder('Nenurodyta')
                             ->columnSpan(1),
                         TextEntry::make('returned_to_storage_at')
-                            ->label('Grąžinta į sandėlį')
+                            ->label('Grąžintas į saugojimo vietą (Data)')
                             ->date('Y-m-d')
                             ->placeholder('Nenurodyta')
                             ->columnSpan(1),
                         TextEntry::make('returned_to_client_at')
-                            ->label('Grąžinta klientui')
+                            ->label('Grąžintas klientui (Data)')
                             ->date('Y-m-d')
                             ->placeholder('Nenurodyta')
                             ->columnSpan(1),
@@ -127,17 +127,17 @@ class DamageCaseInfolist
                             ->placeholder('Nenurodyta')
                             ->columnSpan(1),
                         TextEntry::make('planned_repair_start')
-                            ->label('Planuotas remonto pradžios data')
+                            ->label('Planuojama remonto pradžia (Data)')
                             ->date('Y-m-d')
                             ->placeholder('Nenurodyta')
                             ->columnSpan(1),
                         TextEntry::make('planned_repair_end')
-                            ->label('Planuotas remonto pabaigos data')
+                            ->label('Planuojama remonto pabaiga (Data)')
                             ->date('Y-m-d')
                             ->placeholder('Nenurodyta')
                             ->columnSpan(1),
                         TextEntry::make('finished_at')
-                            ->label('Baigimo data')
+                            ->label('Baigta')
                             ->date('Y-m-d')
                             ->placeholder('Nenurodyta')
                             ->columnSpan(1),

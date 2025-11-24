@@ -15,15 +15,15 @@ class DamageCasesTable
         return $table
             ->columns([
                 \Filament\Tables\Columns\TextColumn::make('damage_number')
-                    ->label('Gedimo numeris')
+                    ->label('Žalos nr.')
                     ->badge()
                     ->color('primary')
                     ->copyable()
-                    ->copyMessage('Gedimo numeris nukopijuotas')
+                    ->copyMessage('Žalos nr. nukopijuotas')
                     ->searchable()
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('insurance_company')
-                    ->label('Draudimo bendrovė')
+                    ->label('Draudimo kompanija')
                     ->searchable()
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('product')
@@ -43,7 +43,7 @@ class DamageCasesTable
                     ->searchable()
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('license_plate')
-                    ->label('Valstybinis numeris')
+                    ->label('Valst nr.')
                     ->badge()
                     ->color('info')
                     ->searchable()
@@ -57,7 +57,7 @@ class DamageCasesTable
                     ->searchable()
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('phone')
-                    ->label('Telefonas')
+                    ->label('Tel nr.')
                     ->searchable()
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('client_full_name')
@@ -79,29 +79,29 @@ class DamageCasesTable
                     ->date('Y-m-d')
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('received_at')
-                    ->label('Gavimo data ir laikas')
+                    ->label('Perėmimo data / laikas')
                     ->dateTime('Y-m-d H:i')
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('received_location')
-                    ->label('Gavimo vieta')
+                    ->label('Perėmimo vieta (adresas)')
                     ->searchable()
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('storage_location')
-                    ->label('Sandėlio vieta')
+                    ->label('Saugojimo vieta')
                     ->badge()
                     ->color('info')
                     ->searchable()
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('removed_from_storage_at')
-                    ->label('Pašalinta iš sandėlio')
+                    ->label('Išvežtas iš saugojimo vietos (Data)')
                     ->date('Y-m-d')
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('returned_to_storage_at')
-                    ->label('Grąžinta į sandėlį')
+                    ->label('Grąžintas į saugojimo vietą (Data)')
                     ->date('Y-m-d')
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('returned_to_client_at')
-                    ->label('Grąžinta klientui')
+                    ->label('Grąžintas klientui (Data)')
                     ->date('Y-m-d')
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('repair_company')
@@ -109,11 +109,11 @@ class DamageCasesTable
                     ->searchable()
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('planned_repair_start')
-                    ->label('Planuota remonto pradžia')
+                    ->label('Planuojama remonto pradžia (Data)')
                     ->date('Y-m-d')
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('planned_repair_end')
-                    ->label('Planuota remonto pabaiga')
+                    ->label('Planuojama remonto pabaiga (Data)')
                     ->date('Y-m-d')
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('finished_at')

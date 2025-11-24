@@ -30,11 +30,12 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->maxContentWidth('full')
+            ->globalSearch(false)
             ->colors([
                 'danger' => Color::Red,
                 'gray' => Color::Slate,
                 'info' => Color::Blue,
-                'primary' => Color::Indigo,
+                'primary' => Color::Green,
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
             ])

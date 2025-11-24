@@ -32,12 +32,6 @@ class PartCategory extends Model
         return $this->hasMany(PartCategory::class, 'parent_id');
     }
 
-    /**
-     * Get the parts in this category.
-     */
-    public function parts(): HasMany
-    {
-        return $this->hasMany(Part::class, 'part_category_id');
-    }
+    
 }
 

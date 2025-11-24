@@ -22,11 +22,11 @@ class DamageCaseResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'damage_number';
 
-    protected static ?string $modelLabel = 'Gedimų atvejis';
+    protected static ?string $modelLabel = 'Užsakymas';
 
-    protected static ?string $pluralModelLabel = 'Gedimų atvejai';
+    protected static ?string $pluralModelLabel = 'Užsakymų valdymas';
 
-    protected static ?string $navigationLabel = 'Gedimų atvejai';
+    protected static ?string $navigationLabel = 'Užsakymų valdymas';
 
     protected static ?int $navigationSort = 1;
 

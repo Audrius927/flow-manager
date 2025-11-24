@@ -21,6 +21,7 @@ class Role extends Model
     public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class, 'permission_role')
+            ->withPivot('can_edit')
             ->withTimestamps();
     }
 

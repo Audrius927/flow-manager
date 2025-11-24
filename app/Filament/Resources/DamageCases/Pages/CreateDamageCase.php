@@ -13,11 +13,11 @@ class CreateDamageCase extends CreateRecord
 
     public function getHeading(): string
     {
-        return 'Sukurti gedimų atvejį';
+        return 'Naujas užsakymas';
     }
 
     public function getTitle(): string
     {
-        return 'Sukurti gedimų atvejį';
+        return 'Naujas užsakymas';
     }
 }

@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class PartStorage extends Model
@@ -13,29 +12,26 @@ class PartStorage extends Model
     use HasFactory;
 
     protected $fillable = [
-        'part_id',
+        'part_number',
+        'part_category_id',
         'car_model_id',
         'engine_id',
         'fuel_type_id',
         'body_type_id',
-        'storage_location',
         'quantity',
-        'condition',
-        'received_at',
         'notes',
     ];
 
     protected $casts = [
         'quantity' => 'integer',
-        'received_at' => 'datetime',
     ];
 
     /**
-     * Get the part that owns the storage.
+     * Get the part category for this storage entry.
      */
-    public function part(): BelongsTo
+    public function partCategory(): BelongsTo
     {
-        return $this->belongsTo(Part::class);
+        return $this->belongsTo(PartCategory::class);
     }
 
     /**

@@ -12,7 +12,7 @@ class ViewDamageCase extends ViewRecord
 
     public function getHeading(): string
     {
-        $number = $this->record->damage_number ?? 'Gedimų atvejis';
+        $number = $this->record->damage_number ?? 'Užsakymas';
         $client = trim(($this->record->first_name ?? '') . ' ' . ($this->record->last_name ?? ''));
         if (!empty($client)) {
             return "{$number} - {$client}";

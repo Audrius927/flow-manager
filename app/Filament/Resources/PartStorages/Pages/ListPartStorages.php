@@ -13,7 +13,23 @@ class ListPartStorages extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+                ->label('Naujas įrašas')
+                ->modalHeading('Pridėti automobilio detalę')
+                ->modalSubmitActionLabel('Išsaugoti')
+                ->modalCancelActionLabel('Atšaukti')
+                ->createAnother(false)
+                ->successNotificationTitle('Įrašas sėkmingai sukurtas'),
         ];
+    }
+
+    public function getHeading(): string
+    {
+        return 'Automobilių detalės';
+    }
+
+    public function getTitle(): string
+    {
+        return 'Automobilių detalės';
     }
 }

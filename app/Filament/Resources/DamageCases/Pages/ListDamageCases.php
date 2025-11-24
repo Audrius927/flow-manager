@@ -16,4 +16,14 @@ class ListDamageCases extends ListRecords
             CreateAction::make(),
         ];
     }
+
+    public function getHeading(): string
+    {
+        return 'Užsakymų valdymas';
+    }
+
+    public function getTitle(): string
+    {
+        return 'Užsakymų valdymas';
+    }
 }
