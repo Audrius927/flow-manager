@@ -40,7 +40,6 @@ class RoleForm
                     ->schema([
                         TextInput::make('name')
                             ->label('Rolės pavadinimas')
-                            ->placeholder('pvz., Sandėlininkas')
                             ->maxLength(100)
                             ->required()
                             ->unique(table: Role::class, column: 'name', ignorable: fn (?Role $record) => $record),
