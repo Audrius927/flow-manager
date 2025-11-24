@@ -1,0 +1,336 @@
+==================================================
+LARAVEL MIGRATION FAILAI - NAUJA SISTEMA
+==================================================
+
+═══════════════════════════════════════════════════
+MINIMALI KONFIGŪRACIJA (tik pagrindas)
+═══════════════════════════════════════════════════
+
+---------------------------------------------------
+1. CREATE_PART_CATEGORIES_TABLE.PHP
+---------------------------------------------------
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('part_categories', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('parent_1_id')->nullable()->constrained('part_categories')->nullOnDelete();
+            $table->foreignId('parent_2_id')->nullable()->constrained('part_categories')->nullOnDelete();
+            $table->timestamps();
+            
+            // Indexes
+            $table->index('parent_1_id');
+            $table->index('parent_2_id');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('part_categories');
+    }
+};
+
+---------------------------------------------------
+2. CREATE_PART_CATEGORY_TRANSLATIONS_TABLE.PHP
+---------------------------------------------------
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('part_category_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('part_category_id')->constrained('part_categories')->cascadeOnDelete();
+            $table->string('locale')->index(); // 'lt', 'en', 'ru'
+            
+            // Translated fields
+            $table->string('title');
+            
+            $table->unique(['part_category_id', 'locale'], 'part_category_unique');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('part_category_translations');
+    }
+};
+
+
+
+
+═══════════════════════════════════════════════════
+PILNA KONFIGŪRACIJA (su visais pasirinkimais)
+═══════════════════════════════════════════════════
+
+---------------------------------------------------
+1. CREATE_PART_CATEGORIES_TABLE.PHP
+---------------------------------------------------
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('part_categories', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('parent_1_id')->nullable()->constrained('part_categories')->nullOnDelete();
+            $table->foreignId('parent_2_id')->nullable()->constrained('part_categories')->nullOnDelete();
+            $table->timestamps();
+            
+            // Indexes
+            $table->index('parent_1_id');
+            $table->index('parent_2_id');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('part_categories');
+    }
+};
+
+---------------------------------------------------
+2. CREATE_PART_CATEGORY_TRANSLATIONS_TABLE.PHP
+---------------------------------------------------
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('part_category_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('part_category_id')->constrained('part_categories')->cascadeOnDelete();
+            $table->string('locale')->index(); // 'lt', 'en', 'ru'
+            
+            // Translated fields
+            $table->string('title');
+            
+            $table->unique(['part_category_id', 'locale'], 'part_category_unique');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('part_category_translations');
+    }
+};
+
+---------------------------------------------------
+3. CREATE_ENGINES_TABLE.PHP
+---------------------------------------------------
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('engines', function (Blueprint $table) {
+            $table->id();
+            $table->string('title'); // pvz: "1.6 TDI", "2.0 HDI"
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('engines');
+    }
+};
+
+---------------------------------------------------
+4. CREATE_FUEL_TYPES_TABLE.PHP
+---------------------------------------------------
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('fuel_types', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('fuel_types');
+    }
+};
+
+---------------------------------------------------
+5. CREATE_FUEL_TYPE_TRANSLATIONS_TABLE.PHP
+---------------------------------------------------
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('fuel_type_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('fuel_type_id')->constrained('fuel_types')->cascadeOnDelete();
+            $table->string('locale')->index();
+            
+            // Translated fields
+            $table->string('title'); // pvz: "Dyzelinas", "Benzinas"
+            
+            $table->unique(['fuel_type_id', 'locale'], 'fuel_type_unique');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('fuel_type_translations');
+    }
+};
+
+---------------------------------------------------
+6. CREATE_BODY_TYPES_TABLE.PHP
+---------------------------------------------------
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('body_types', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('body_types');
+    }
+};
+
+---------------------------------------------------
+7. CREATE_BODY_TYPE_TRANSLATIONS_TABLE.PHP
+---------------------------------------------------
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('body_type_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('body_type_id')->constrained('body_types')->cascadeOnDelete();
+            $table->string('locale')->index();
+            
+            // Translated fields
+            $table->string('title'); // pvz: "Sedanas", "Universalas"
+            
+            $table->unique(['body_type_id', 'locale'], 'body_type_unique');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('body_type_translations');
+    }
+};
+
+---------------------------------------------------
+8. CREATE_PART_PLACES_TABLE.PHP
+---------------------------------------------------
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('part_places', function (Blueprint $table) {
+            $table->id();
+            $table->string('title'); // pvz: "Variklis", "Važiuoklė", "Kėbulas"
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('part_places');
+    }
+};
+
+
+
+
+═══════════════════════════════════════════════════
+PASTABOS
+═══════════════════════════════════════════════════
+
+1. Part Categories struktūra:
+   - 1 lygis: parent_1_id = null, parent_2_id = null (root kategorijos)
+   - 2 lygis: parent_1_id = ID, parent_2_id = null (sub-kategorijos)
+   - 3 lygis: parent_1_id = ID, parent_2_id = ID (leaf kategorijos)
+
+2. Translations:
+   - Jei nereikia daugkalbiškumo, galite ignoruoti translation lenteles
+   - Tuomet tiesiog pridėkite 'title' lauką į pagrindines lenteles
+
+3. Migration vykdymo tvarka:
+   - Pirma sukurkite pagrindines lenteles (part_categories, engines, fuel_types, body_types, part_places)
+   - Tada sukurkite translation lenteles
+
+4. Failų vietos:
+   - Išsaugokite kaip: database/migrations/YYYY_MM_DD_HHMMSS_create_[table_name]_table.php
+

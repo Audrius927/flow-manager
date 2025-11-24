@@ -1,0 +1,112 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+/* Custom styling improvements */
+@layer components {
+    /* Smooth transitions for better UX */
+    * {
+        @apply transition-colors duration-200;
+    }
+    
+    /* Enhanced button styling with better shadows */
+    .fi-btn {
+        @apply font-medium shadow-sm transition-all duration-200;
+    }
+    
+    .fi-btn:hover {
+        @apply shadow-md transform scale-[1.02];
+    }
+    
+    /* Better card and section styling */
+    .fi-section-container-ctn {
+        @apply shadow-sm rounded-lg border border-gray-200 dark:border-gray-700;
+    }
+    
+    /* Enhanced table styling */
+    .fi-ta-table {
+        @apply shadow-sm rounded-lg overflow-hidden;
+    }
+    
+    /* Improved form inputs with better focus states */
+    .fi-input {
+        @apply shadow-sm transition-all duration-200;
+    }
+    
+    .fi-input:focus {
+        @apply ring-2 ring-indigo-500 border-indigo-500 shadow-md;
+    }
+    
+    /* Enhanced badge styling */
+    .fi-badge {
+        @apply font-medium px-2.5 py-0.5;
+    }
+    
+    /* Better navigation spacing */
+    .fi-sidebar-nav {
+        @apply space-y-1;
+    }
+    
+    /* Enhanced modal styling */
+    .fi-modal {
+        @apply shadow-2xl;
+    }
+    
+    /* Better sidebar styling */
+    .fi-sidebar {
+        @apply shadow-lg;
+    }
+    
+    /* Improved select dropdowns */
+    .fi-select-option {
+        @apply transition-colors duration-150;
+    }
+    
+    /* Better focus states for interactive elements */
+    .fi-fo-field-wrp-label {
+        @apply font-medium;
+    }
+    
+    /* Enhanced table row hover */
+    .fi-ta-table tbody tr {
+        @apply transition-colors duration-150;
+    }
+    
+    .fi-ta-table tbody tr:hover {
+        @apply bg-gray-50 dark:bg-gray-800/50;
+    }
+}
+
+/* Custom color and utility enhancements */
+@layer utilities {
+    /* Primary color improvements */
+    .fi-color-primary-600 {
+        @apply bg-indigo-600;
+    }
+    
+    /* Enhanced primary button hover */
+    .fi-btn-primary:hover {
+        @apply bg-indigo-700 shadow-lg;
+    }
+    
+    /* Better success color */
+    .fi-color-success-600 {
+        @apply bg-emerald-600;
+    }
+    
+    /* Improved info color */
+    .fi-color-info-600 {
+        @apply bg-blue-600;
+    }
+    
+    /* Better warning color */
+    .fi-color-warning-600 {
+        @apply bg-orange-600;
+    }
+    
+    /* Enhanced danger color */
+    .fi-color-danger-600 {
+        @apply bg-red-600;
+    }
+}
