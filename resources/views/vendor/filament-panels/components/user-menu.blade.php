@@ -38,7 +38,7 @@
             class="fi-user-menu-trigger"
         >
             <span
-                class="inline-flex items-center rounded-full border border-emerald-500 bg-emerald-500 px-4 py-1.5 text-base font-semibold text-gray-100 transition hover:bg-emerald-600 hover:text-white dark:border-emerald-400 dark:bg-emerald-500 dark:text-gray-100 dark:hover:bg-emerald-400 dark:hover:text-gray-900 hover:scale-110 cursor-pointer"
+                class="inline-flex items-center rounded-full border border-emerald-500 bg-emerald-500 px-4 py-1.5 text-base font-semibold text-gray-100 transition hover:bg-emerald-600 hover:text-white hover:scale-110 cursor-pointer"
             >
                 {{ $user?->name ?? __('filament-panels::layout.account_widget.placeholder') }}
             </span>
@@ -72,12 +72,6 @@
                     {{ $item }}
                 @endif
             @endforeach
-        </x-filament::dropdown.list>
-    @endif
-
-    @if (filament()->hasDarkMode() && (! filament()->hasDarkModeForced()))
-        <x-filament::dropdown.list>
-            <x-filament-panels::theme-switcher />
         </x-filament::dropdown.list>
     @endif
 
