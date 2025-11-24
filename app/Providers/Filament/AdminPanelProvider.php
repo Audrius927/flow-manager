@@ -40,8 +40,9 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Orange,
             ])
             ->font('Inter')
-            ->brandName('Logotipas')
-            ->brandLogoHeight('2.5rem')
+            ->brandName('Easy Assistance')
+            ->brandLogo(fn () => asset('Green-logo.svg'))
+            ->brandLogoHeight('5rem')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([

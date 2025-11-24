@@ -18,11 +18,11 @@ class UserDamageCaseResource extends Resource
 
     protected static ?string $recordTitleAttribute = null;
 
-    protected static ?string $modelLabel = 'Užsakymo priskyrimas';
+    protected static ?string $modelLabel = 'Vartotojų valdymas';
 
-    protected static ?string $pluralModelLabel = 'Užsakymų priskyrimai';
+    protected static ?string $pluralModelLabel = 'Vartotojų valdymas';
 
-    protected static ?string $navigationLabel = 'Užsakymų priskyrimai';
+    protected static ?string $navigationLabel = 'Vartotojų valdymas';
 
     protected static ?int $navigationSort = 2;
 

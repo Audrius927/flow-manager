@@ -21,10 +21,19 @@ class RolesTable
                     ->color('primary')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('permissions.name')
+                TextColumn::make('permissions_label')
                     ->label('Leidimai')
                     ->badge()
                     ->color('info')
+                    ->state(function ($record) {
+                        if ($record->permissions->isEmpty()) {
+                            return null;
+                        }
+
+                        return $record->permissions
+                            ->map(fn ($permission) => $permission->label ?? $permission->name)
+                            ->implode(', ');
+                    })
                     ->separator(', ')
                     ->placeholder('Nėra'),
                 TextColumn::make('users_count')
