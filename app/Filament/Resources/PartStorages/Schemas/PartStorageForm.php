@@ -57,7 +57,7 @@ class PartStorageForm
                         Textarea::make('notes')
                             ->label('Pastabos')
                             ->rows(4)
-                            ->maxLength(65535)
+                            ->maxLength(500)
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
