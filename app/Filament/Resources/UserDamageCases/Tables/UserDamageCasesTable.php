@@ -23,7 +23,7 @@ class UserDamageCasesTable
                     ->searchable()
                     ->toggleable(),
                 TextColumn::make('damageCase.damage_number')
-                    ->label('Gedimų atvejis')
+                    ->label('Žalos nr.')
                     ->searchable(['damage_cases.damage_number'])
                     ->sortable()
                     ->copyable()

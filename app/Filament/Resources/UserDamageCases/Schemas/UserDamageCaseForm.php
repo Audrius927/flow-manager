@@ -48,10 +48,10 @@ class UserDamageCaseForm
                         return null;
                     }),
                 Select::make('damage_case_id')
-                    ->label('Gedimų atvejis')
+                    ->label('Žalos nr.')
                     ->relationship('damageCase', 'damage_number')
                     ->getOptionLabelFromRecordUsing(function ($record) {
-                        $label = $record->damage_number ?? 'Gedimų atvejis #' . $record->id;
+                        $label = $record->damage_number ?? 'Žalos nr. #' . $record->id;
                         $client = trim(($record->first_name ?? '') . ' ' . ($record->last_name ?? ''));
                         if (!empty($client)) {
                             $label .= ' - ' . $client;
@@ -76,7 +76,7 @@ class UserDamageCaseForm
                                 
                                 if (!empty($existing)) {
                                     $users = \App\Models\User::whereIn('id', $existing)->pluck('name')->join(', ');
-                                    $fail('Šie vartotojai jau priskirti šiam gedimų atvejui: ' . $users);
+                                    $fail('Šie vartotojai jau priskirti šiam užsakymui: ' . $users);
                                 }
                             };
                         },
