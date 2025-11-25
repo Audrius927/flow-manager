@@ -28,8 +28,7 @@ class DamageCaseForm
                     ->schema([
                         TextInput::make('damage_number')
                             ->label('Žalos nr.')
-                            ->unique(ignoreRecord: true)
-                            ->maxLength(255)
+                            ->maxLength(100)
                             ->columnSpan(1)
                             ->visible($canView('damage_number'))
                             ->disabled(fn () => ! $canEdit('damage_number')),

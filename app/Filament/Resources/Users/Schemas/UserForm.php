@@ -30,13 +30,18 @@ class UserForm
                             ->unique(table: User::class, column: 'email', ignorable: fn (?User $record) => $record)
                             ->required()
                             ->columnSpan(1),
-                        Select::make('roles')
+                        Select::make('role_id')
                             ->label('Rolė')
-                            ->relationship('roles', 'name')
-                            ->multiple(false)
-                            ->preload()
+                            ->options(fn () => \App\Models\Role::orderBy('name')->pluck('name', 'id'))
                             ->searchable()
-                            ->helperText('Pasirinkite vieną rolę.')
+                            ->required()
+                            ->dehydrateStateUsing(fn ($state) => $state ? [$state] : [])
+                            ->afterStateHydrated(function (callable $set, ?User $record): void {
+                                if ($record && $record->roles()->exists()) {
+                                    $set('role_id', $record->roles()->first()->id);
+                                }
+                            })
+                            ->helperText('Pasirinkite vieną rolę (priskyrimas bus automatiškai atnaujintas).')
                             ->columnSpanFull(),
                         Toggle::make('change_password')
                             ->label('Keisti slaptažodį?')

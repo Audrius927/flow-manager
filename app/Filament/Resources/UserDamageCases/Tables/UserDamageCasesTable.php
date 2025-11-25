@@ -16,10 +16,13 @@ class UserDamageCasesTable
             ->columns([
                 TextColumn::make('user.name')
                     ->label('Vartotojas')
+                    ->description(fn ($record) => $record->user?->roles->pluck('name')->join(', '))
                     ->searchable(['users.name', 'users.email'])
                     ->sortable(),
                 TextColumn::make('user.email')
                     ->label('El. paštas')
+                    ->copyable()
+                    ->copyMessage('El. paštas nukopijuotas')
                     ->searchable()
                     ->toggleable(),
                 TextColumn::make('damageCase.damage_number')
@@ -29,23 +32,6 @@ class UserDamageCasesTable
                     ->copyable()
                     ->badge()
                     ->color('primary'),
-                TextColumn::make('damageCase.client_info')
-                    ->label('Klientas')
-                    ->state(function ($record) {
-                        if (!$record->damageCase) {
-                            return null;
-                        }
-                        $client = trim(($record->damageCase->first_name ?? '') . ' ' . ($record->damageCase->last_name ?? ''));
-                        return !empty($client) ? $client : ($record->damageCase->phone ?? '-');
-                    })
-                    ->searchable(query: function ($query, $search) {
-                        return $query->whereHas('damageCase', function ($q) use ($search) {
-                            $q->where('first_name', 'like', "%{$search}%")
-                              ->orWhere('last_name', 'like', "%{$search}%")
-                              ->orWhere('phone', 'like', "%{$search}%");
-                        });
-                    })
-                    ->toggleable(),
                 TextColumn::make('created_at')
                     ->label('Priskirta')
                     ->dateTime('Y-m-d H:i')
