@@ -57,11 +57,6 @@ class UsersTable
                 EditAction::make()
                     ->label('Redaguoti'),
             ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make()
-                        ->label('Pašalinti pasirinktus'),
-                ]),
-            ]);
+            ->toolbarActions([]);
     }
 }

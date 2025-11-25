@@ -65,10 +65,11 @@ class UserDamageCasesTable
                     ->modalHeading('Redaguoti priskyrimą')
                     ->modalSubmitActionLabel('Išsaugoti')
                     ->modalCancelActionLabel('Atšaukti')
-                    ->mutateFormDataUsing(function (array $data, $record): array {
-                        // Konvertuojame user_id į user_ids masyvą, kad forma veiktų
-                        $data['user_ids'] = [$record->user_id];
-                        return $data;
+                    ->fillForm(function ($record): array {
+                        return [
+                            'user_ids' => [$record->user_id],
+                            'damage_case_id' => $record->damage_case_id,
+                        ];
                     })
                     ->mutateRecordDataUsing(function (array $data): array {
                         // Konvertuojame user_ids masyvą atgal į user_id

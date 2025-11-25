@@ -4,6 +4,7 @@ namespace App\Filament\Resources\DamageCases\Pages;
 
 use App\Enums\SystemRole;
 use App\Filament\Resources\DamageCases\DamageCaseResource;
+use App\Services\DamageCases\DamageCaseFieldPermissionResolver;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,17 +27,25 @@ class ListDamageCases extends ListRecords
     protected function getTableQuery(): Builder
     {
         $user = auth()->user();
+        $permissions = app(DamageCaseFieldPermissionResolver::class);
 
         $query = parent::getTableQuery();
 
-        // Jei vartotojas nėra admin, rodyti tik jam priskirtus damage cases
-        if ($user && $user->system_role !== SystemRole::Admin) {
-            $query->whereHas('users', function (Builder $q) use ($user) {
-                $q->where('users.id', $user->id);
-            });
+        if (! $user) {
+            return $query->where(fn (Builder $builder) => $builder->whereRaw('1 = 0'));
         }
 
-        return $query;
+        if ($user->system_role === SystemRole::Admin) {
+            return $query;
+        }
+
+        if ($user->roles->isEmpty() || ! $permissions->canViewAny($user, ...$permissions->getConfiguredFields())) {
+            return $query->where(fn (Builder $builder) => $builder->whereRaw('1 = 0'));
+        }
+
+        return $query->whereHas('users', function (Builder $q) use ($user) {
+            $q->where('users.id', $user->id);
+        });
     }
 
     public function getHeading(): string

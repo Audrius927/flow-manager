@@ -58,31 +58,21 @@ class DamageCaseForm
                             ->columnSpan(1)
                             ->visible($canView('received_at'))
                             ->disabled(fn () => ! $canEdit('received_at')),
-                        Select::make('car_mark_filter')
+                        Select::make('car_mark_id')
                             ->label('Markė')
                             ->options(\App\Models\CarMark::pluck('title', 'id'))
                             ->searchable()
                             ->preload()
                             ->placeholder('Pasirinkite markę')
-                            ->default(function ($get, $record) {
-                                if ($record) {
-                                    return $record->car_mark_id ?? ($record->carModel?->car_mark_id ?? null);
-                                }
-                                return null;
-                            })
                             ->reactive()
                             ->afterStateUpdated(fn ($set) => $set('car_model_id', null))
-                            ->dehydrated(false)
                             ->columnSpan(1)
                             ->visible($canView('car_mark_id'))
                             ->disabled(fn () => ! $canEdit('car_mark_id')),
                         Select::make('car_model_id')
                             ->label('Modelis')
                             ->options(function ($get, $record) {
-                                $markId = $get('car_mark_filter');
-                                if (!$markId && $record) {
-                                    $markId = $record->car_mark_id ?? ($record->carModel?->car_mark_id ?? null);
-                                }
+                                $markId = $get('car_mark_id') ?? $record?->car_mark_id ?? ($record?->carModel?->car_mark_id ?? null);
                                 if (!$markId) {
                                     return [];
                                 }
@@ -95,7 +85,7 @@ class DamageCaseForm
                             ->preload()
                             ->placeholder('Pirma pasirinkite markę')
                             ->disabled(function ($get) use ($canEdit) {
-                                if (! $get('car_mark_filter')) {
+                                if (! $get('car_mark_id')) {
                                     return true;
                                 }
 

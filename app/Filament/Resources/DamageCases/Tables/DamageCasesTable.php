@@ -18,6 +18,10 @@ class DamageCasesTable
         $permissions = app(DamageCaseFieldPermissionResolver::class);
         $isAdmin = $user?->system_role === SystemRole::Admin;
 
+        if (!$isAdmin && !$permissions->canViewAny($user, ...$permissions->getConfiguredFields())) {
+            return $table->emptyStateHeading('Jūs neturite prieigos prie šių įrašų.');
+        }
+
         return $table
             ->columns([
                 \Filament\Tables\Columns\TextColumn::make('damage_number')
@@ -88,7 +92,10 @@ class DamageCasesTable
                               ->orWhere('phone', 'like', "%{$search}%");
                         });
                     })
-                    ->sortable()
+                    ->sortable(query: function ($query, string $direction) {
+                        return $query->orderBy('first_name', $direction)
+                            ->orderBy('last_name', $direction);
+                    })
                     ->visible($permissions->canViewAny($user, 'first_name', 'last_name', 'phone')),
                 \Filament\Tables\Columns\TextColumn::make('order_date')
                     ->label('Užsakymo data')

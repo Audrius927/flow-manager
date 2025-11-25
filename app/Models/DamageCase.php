@@ -56,6 +56,21 @@ class DamageCase extends Model
     }
 
     /**
+     * Pivot assignments between users and damage cases.
+     */
+    public function userAssignments(): HasMany
+    {
+        return $this->hasMany(UserDamageCase::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::deleting(function (DamageCase $damageCase): void {
+            $damageCase->userAssignments()->delete();
+        });
+    }
+
+    /**
      * Get the car mark associated with this damage case.
      */
     public function carMark(): BelongsTo
