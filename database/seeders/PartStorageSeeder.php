@@ -37,7 +37,7 @@ class PartStorageSeeder extends Seeder
 
         $records = [];
 
-        for ($i = 1; $i <= $recordsToCreate; $i++) {
+        // for ($i = 1; $i <= $recordsToCreate; $i++) {
             $records[] = [
                 'part_number' => strtoupper($faker->unique()->bothify('PS-####-??')),
                 'part_category_id' => $faker->randomElement($partCategoryIds),
@@ -52,7 +52,7 @@ class PartStorageSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now,
             ];
-        }
+        // }
 
         foreach (array_chunk($records, $chunkSize) as $chunk) {
             PartStorage::insert($chunk);

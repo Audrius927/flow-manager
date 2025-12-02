@@ -16,7 +16,7 @@ class DamageCaseSeeder extends Seeder
         $users = User::where('system_role', 'user')->pluck('id')->all();
         $carMarks = \App\Models\CarMark::with('models')->get();
         $carModels = \App\Models\CarModel::with('mark')->get();
-        $damageCasesToCreate = 500;
+        $damageCasesToCreate = 1;
 
         for ($i = 1; $i <= $damageCasesToCreate; $i++) {
             $orderDate = Carbon::now()->subDays(rand(0, 180))->startOfDay();
