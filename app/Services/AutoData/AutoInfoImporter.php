@@ -34,7 +34,7 @@ class AutoInfoImporter
         }
 
         $files = [
-            'car_marks' => "{$directory}/car_marks.json",
+            'car_marks' => "{$directory}/markes_modeliai.json",
             'part_categories' => "{$directory}/part_categories.json",
             'fuel_types' => "{$directory}/fuel_types.json",
             'body_types' => "{$directory}/body_types.json",
@@ -81,7 +81,10 @@ class AutoInfoImporter
     {
         $modelsCount = 0;
 
-        foreach ($payload as $item) {
+        // Naujo JSON struktūra: { "meta": {...}, "makes": [...] }
+        $makes = $payload['makes'] ?? $payload; // Jei nėra 'makes', naudoti visą payload (atgalinis suderinamumas)
+
+        foreach ($makes as $item) {
             $mark = CarMark::query()->create([
                 'title' => $item['title'],
             ]);
@@ -95,7 +98,7 @@ class AutoInfoImporter
             }
         }
 
-        return count($payload);
+        return count($makes);
     }
 
     private function importPartCategories(array $payload): int

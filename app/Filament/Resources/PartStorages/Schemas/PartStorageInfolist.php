@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\PartStorages\Schemas;
 
+use App\Models\PartStorage as PartStorageModel;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -64,6 +66,28 @@ class PartStorageInfolist
                             ->label('Kėbulo tipas')
                             ->placeholder('Nenurodytas'),
                     ]),
+                Section::make('Nuotraukos')
+                    ->description('Detalės nuotraukos')
+                    ->components([
+                        ViewEntry::make('images_gallery')
+                            ->label('Nuotraukos')
+                            ->view('filament.part-storages.infolist.images-gallery')
+                            ->viewData(fn (PartStorageModel $record) => [
+                                'images' => $record->images()
+                                    ->orderBy('sort_order')
+                                    ->get()
+                                    ->map(fn ($image) => [
+                                        'id' => $image->id,
+                                        'url' => $image->path ? route('files.private.show', ['path' => $image->path]) : null,
+                                        'name' => $image->original_name ?? basename($image->path ?? ''),
+                                        'uploaded_at' => optional($image->created_at)->format('Y-m-d H:i'),
+                                    ])
+                                    ->filter(fn ($image) => filled($image['url']))
+                                    ->values(),
+                            ])
+                            ->columnSpanFull(),
+                    ])
+                    ->columnSpanFull(),
                 Section::make('Sistemos informacija')
                     ->description('Įrašo sukurimo ir atnaujinimo datos')
                     ->columns(2)

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class PartStorage extends Model
@@ -81,6 +82,14 @@ class PartStorage extends Model
     public function bodyType(): BelongsTo
     {
         return $this->belongsTo(BodyType::class);
+    }
+
+    /**
+     * Get all images attached to the part storage.
+     */
+    public function images(): HasMany
+    {
+        return $this->hasMany(PartStorageImage::class)->orderBy('sort_order');
     }
 }
 

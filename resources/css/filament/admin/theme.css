@@ -27,7 +27,7 @@
     
     /* Enhanced table styling */
     .fi-ta-table {
-        @apply shadow-sm rounded-lg overflow-hidden;
+        @apply shadow-sm rounded-lg;
     }
     
     /* Improved form inputs with better focus states */
@@ -76,6 +76,11 @@
     
     .fi-ta-table tbody tr:hover {
         @apply bg-gray-50 dark:bg-gray-800/50;
+    }
+
+
+    .fi-dropdown-panel {
+        z-index: 60 !important;
     }
 
     /* Friendly file upload dropzone */
@@ -148,4 +153,87 @@
     .fi-color-danger-600 {
         @apply bg-red-600;
     }
+}
+
+/* ============================================
+   STICKY TABLE HEADER - VISADA STICKY
+   Už @layer ribų, kad būtų aukščiausias prioritetas
+   ============================================ */
+
+/* BŪTINA: overflow container turi būti tinkamai nustatytas */
+.fi-ta-content-ctn,
+.fi-ta-content {
+    max-height: calc(100vh - 20rem) !important;
+    overflow-y: auto !important;
+    overflow-x: auto !important;
+    position: relative !important;
+}
+
+/* BŪTINA: border-collapse: separate reikalingas sticky veikimui */
+.fi-ta-table,
+table.fi-ta-table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    width: 100% !important;
+}
+
+/* Thead - sticky pozicija su background */
+.fi-ta-table thead,
+.fi-ta-ctn .fi-ta-table thead,
+.fi-ta-content-ctn .fi-ta-table thead {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 50 !important;
+    background-color: rgb(255, 255, 255) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Thead tr - sticky pozicija */
+.fi-ta-table thead tr,
+.fi-ta-ctn .fi-ta-table thead tr,
+.fi-ta-content-ctn .fi-ta-table thead tr {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 51 !important;
+    background-color: rgb(255, 255, 255) !important;
+}
+
+/* Thead th - sticky pozicija su shadow ir background */
+.fi-ta-table thead th,
+.fi-ta-header-cell,
+.fi-ta-ctn .fi-ta-table thead th,
+.fi-ta-content-ctn .fi-ta-table thead th {
+    position: sticky !important;
+    top: 0 !important;
+    background-color: rgb(255, 255, 255) !important;
+    z-index: 52 !important;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Dark mode support */
+.dark .fi-ta-table thead,
+.dark .fi-ta-ctn .fi-ta-table thead,
+.dark .fi-ta-content-ctn .fi-ta-table thead {
+    background-color: rgb(24, 24, 27) !important;
+}
+
+.dark .fi-ta-table thead tr,
+.dark .fi-ta-ctn .fi-ta-table thead tr,
+.dark .fi-ta-content-ctn .fi-ta-table thead tr {
+    background-color: rgb(24, 24, 27) !important;
+}
+
+.dark .fi-ta-table thead th,
+.dark .fi-ta-header-cell,
+.dark .fi-ta-ctn .fi-ta-table thead th,
+.dark .fi-ta-content-ctn .fi-ta-table thead th {
+    background-color: rgb(24, 24, 27) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Užtikriname, kad table wrapper netrukdo sticky veikimui */
+.fi-ta-ctn {
+    position: relative !important;
 }

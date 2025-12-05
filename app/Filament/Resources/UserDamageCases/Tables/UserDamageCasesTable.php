@@ -17,17 +17,25 @@ class UserDamageCasesTable
                 TextColumn::make('user.name')
                     ->label('Vartotojas')
                     ->description(fn ($record) => $record->user?->roles->pluck('name')->join(', '))
-                    ->searchable(['users.name', 'users.email'])
+                    ->searchable(query: function ($query, $search) {
+                        return $query->whereHas('user', function ($q) use ($search) {
+                            $q->where('name', 'like', "%{$search}%")
+                              ->orWhere('email', 'like', "%{$search}%");
+                        });
+                    })
                     ->sortable(),
                 TextColumn::make('user.email')
                     ->label('El. paštas')
                     ->copyable()
                     ->copyMessage('El. paštas nukopijuotas')
-                    ->searchable()
                     ->toggleable(),
                 TextColumn::make('damageCase.damage_number')
                     ->label('Žalos nr.')
-                    ->searchable(['damage_cases.damage_number'])
+                    ->searchable(query: function ($query, $search) {
+                        return $query->whereHas('damageCase', function ($q) use ($search) {
+                            $q->where('damage_number', 'like', "%{$search}%");
+                        });
+                    })
                     ->sortable()
                     ->copyable()
                     ->badge()

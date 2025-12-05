@@ -6,6 +6,7 @@ use App\Models\CarMark;
 use App\Models\CarModel;
 use App\Models\PartStorage as PartStorageModel;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -93,6 +94,7 @@ class PartStorageForm
                         Select::make('engine_id')
                             ->label('Variklis')
                             ->relationship('engine', 'title')
+                            ->optionsLimit(1000)
                             ->searchable()
                             ->preload(),
                         Select::make('fuel_type_id')
@@ -107,6 +109,37 @@ class PartStorageForm
                             ->preload(),
                     ])
                     ->columns(2),
+                Section::make('Nuotraukos')
+                    ->description('Detalės nuotraukos')
+                    ->schema([
+                        FileUpload::make('images_uploads')
+                            ->label('Nuotraukos')
+                            ->multiple()
+                            ->disk('private')
+                            ->directory('part-storages/images')
+                            ->image()
+                            ->imageEditor()
+                            ->reorderable()
+                            ->visibility('private')
+                            ->placeholder('Paspauskite „Įkelti nuotraukas" arba nutempkite čia')
+                            ->loadingIndicatorPosition('center')
+                            ->uploadButtonPosition('center')
+                            ->openable()
+                            ->downloadable()
+                            ->maxFiles(10)
+                            ->afterStateHydrated(function (callable $set, ?PartStorageModel $record) {
+                                if ($record) {
+                                    $set('images_uploads', $record->images->pluck('path')->all());
+                                }
+                            })
+                            ->dehydrateStateUsing(fn ($state) => $state ?? [])
+                            ->helperText('Galite įkelti nuotraukas tiesiai iš telefono.')
+                            ->extraAttributes([
+                                'capture' => 'environment',
+                                'accept' => 'image/*',
+                            ]),
+                    ])
+                    ->columnSpanFull(),
             ]);
     }
 }

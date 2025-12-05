@@ -10,6 +10,14 @@ class ViewPartStorage extends ViewRecord
 {
     protected static string $resource = PartStorageResource::class;
 
+    public function mount(int | string $record): void
+    {
+        parent::mount($record);
+
+        // Užkrauti images relationship
+        $this->record->load('images');
+    }
+
     protected function getHeaderActions(): array
     {
         return [

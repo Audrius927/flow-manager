@@ -4,6 +4,7 @@ namespace App\Filament\Resources\PartStorages\Tables;
 
 use App\Models\CarMark;
 use App\Models\CarModel;
+use App\Models\Engine;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -125,6 +126,7 @@ class PartStoragesTable
                                     ->orderBy('title')
                                     ->pluck('title', 'id');
                             })
+                            ->disabled(fn (callable $get) => blank($get('car_mark_id')))
                             ->optionsLimit(2000)
                             ->searchable()
                             ->placeholder('Visi modeliai'),
@@ -162,34 +164,108 @@ class PartStoragesTable
 
                         return null;
                     }),
-                SelectFilter::make('engine_id')
+                Filter::make('engine')
                     ->label('Variklis')
-                    ->relationship('engine', 'title')
-                    ->placeholder('Visi varikliai'),
+                    ->form([
+                        Select::make('engine_from')
+                            ->label('Variklis nuo')
+                            ->options(function () {
+                                return Engine::orderBy('title')->pluck('title', 'id');
+                            })
+                            ->optionsLimit(1000)
+                            ->searchable()
+                            ->placeholder('Nuo '),
+                        Select::make('engine_to')
+                            ->label('Variklis iki')
+                            ->options(function () {
+                                return Engine::orderBy('title')->pluck('title', 'id');
+                            })
+                            ->optionsLimit(1000)
+                            ->searchable()
+                            ->placeholder('Iki '),
+                    ])
+                    ->columns(2)
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['engine_from'] ?? null,
+                                fn (Builder $query, $engineId) => $query->where('engine_id', '>=', $engineId),
+                            )
+                            ->when(
+                                $data['engine_to'] ?? null,
+                                fn (Builder $query, $engineId) => $query->where('engine_id', '<=', $engineId),
+                            );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        if ($data['engine_from'] ?? null) {
+                            $engine = Engine::find($data['engine_from']);
+                            if ($engine) {
+                                $indicators['engine_from'] = 'Variklis nuo: ' . $engine->title;
+                            }
+                        }
+                        if ($data['engine_to'] ?? null) {
+                            $engine = Engine::find($data['engine_to']);
+                            if ($engine) {
+                                $indicators['engine_to'] = 'Variklis iki: ' . $engine->title;
+                            }
+                        }
+                        return $indicators;
+                    }),
                 Filter::make('year')
                     ->label('Metai')
                     ->form([
-                        Select::make('year')
-                            ->label('Metai')
-                            ->options(function (): array {
-                                $years = range(1900, now()->year + 1);
-
-                                return collect($years)
-                                    ->sortDesc()
-                                    ->mapWithKeys(fn (int $year) => [$year => $year])
-                                    ->all();
+                        Select::make('year_from')
+                            ->label('Metai nuo')
+                            ->options(function () {
+                                $currentYear = now()->year;
+                                $startYear = 1900;
+                                $years = [];
+                                for ($year = $currentYear + 1; $year >= $startYear; $year--) {
+                                    $years[$year] = $year;
+                                }
+                                return $years;
                             })
-                            ->optionsLimit(2000)
+                            ->optionsLimit(1000)
                             ->searchable()
-                            ->placeholder('Visi metai'),
+                            ->placeholder('Nuo '),
+                        Select::make('year_to')
+                            ->label('Metai iki')
+                            ->options(function () {
+                                $currentYear = now()->year;
+                                $startYear = 1900;
+                                $years = [];
+                                for ($year = $currentYear + 1; $year >= $startYear; $year--) {
+                                    $years[$year] = $year;
+                                }
+                                return $years;
+                            })
+                            ->optionsLimit(1000)
+                            ->searchable()
+                            ->placeholder('Iki '),
                     ])
+                    ->columns(2)
                     ->query(function (Builder $query, array $data): Builder {
-                        return $query->when(
-                            $data['year'] ?? null,
-                            fn (Builder $query, $year) => $query->where('year', $year),
-                        );
+                        return $query
+                            ->when(
+                                $data['year_from'] ?? null,
+                                fn (Builder $query, $year) => $query->where('year', '>=', $year),
+                            )
+                            ->when(
+                                $data['year_to'] ?? null,
+                                fn (Builder $query, $year) => $query->where('year', '<=', $year),
+                            );
                     })
-                    ->indicateUsing(fn (array $data): ?string => !empty($data['year']) ? "Metai: {$data['year']}" : null),
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        if ($data['year_from'] ?? null) {
+                            $indicators['year_from'] = 'Metai nuo: ' . $data['year_from'];
+                        }
+                        if ($data['year_to'] ?? null) {
+                            $indicators['year_to'] = 'Metai iki: ' . $data['year_to'];
+                        }
+                        return $indicators;
+                    }),
                 SelectFilter::make('body_type_id')
                     ->label('Kėbulo tipas')
                     ->relationship('bodyType', 'title')
