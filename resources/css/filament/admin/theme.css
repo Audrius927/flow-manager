@@ -111,6 +111,31 @@
         @apply text-sm font-normal text-gray-500 dark:text-gray-300;
     }
 
+    /* FileUpload hover effect with cursor pointer */
+    .filepond--root,
+    .filepond--drop-label,
+    .filepond--drop-label label,
+    .filepond--label-action {
+        @apply cursor-pointer transition-all duration-200;
+    }
+
+    .filepond--root:hover {
+        @apply border-emerald-500 bg-emerald-100 dark:bg-emerald-500/15 transform scale-[1.01] shadow-md;
+    }
+
+    .filepond--drop-label:hover {
+        @apply text-emerald-700 dark:text-emerald-300;
+    }
+
+    .filepond--label-action:hover {
+        @apply bg-emerald-700 shadow-lg transform scale-105;
+    }
+
+    /* Specific styling for ea-upload-slot if needed */
+    .ea-upload-slot .filepond--root:hover {
+        @apply border-emerald-500 bg-emerald-100 dark:bg-emerald-500/15 transform scale-[1.01] shadow-md;
+    }
+
     /* Sidebar active state */
     .fi-sidebar .fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
         @apply bg-emerald-500 text-white font-semibold;

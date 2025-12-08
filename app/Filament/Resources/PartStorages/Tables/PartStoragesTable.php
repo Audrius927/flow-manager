@@ -174,25 +174,45 @@ class PartStoragesTable
                             })
                             ->optionsLimit(1000)
                             ->searchable()
+                            ->live()
+                            ->reactive()
+                            ->afterStateUpdated(function (callable $set, $state) {
+                                // Išvalyti "iki" jei jis mažesnis nei "nuo"
+                                $set('engine_to', null);
+                            })
                             ->placeholder('Nuo '),
                         Select::make('engine_to')
                             ->label('Variklis iki')
-                            ->options(function () {
-                                return Engine::orderBy('title')->pluck('title', 'id');
+                            ->options(function (callable $get) {
+                                $fromId = $get('engine_from');
+                                
+                                return Engine::query()
+                                    ->when($fromId, fn ($query) => $query->where('id', '>=', $fromId))
+                                    ->orderBy('title')
+                                    ->pluck('title', 'id');
                             })
                             ->optionsLimit(1000)
+                            ->disabled(fn (callable $get) => blank($get('engine_from')))
                             ->searchable()
                             ->placeholder('Iki '),
                     ])
                     ->columns(2)
                     ->query(function (Builder $query, array $data): Builder {
+                        $fromId = $data['engine_from'] ?? null;
+                        $toId = $data['engine_to'] ?? null;
+                        
+                        // Jei "iki" mažesnė nei "nuo", ignoruoti "iki"
+                        if ($fromId && $toId && $toId < $fromId) {
+                            $toId = null;
+                        }
+                        
                         return $query
                             ->when(
-                                $data['engine_from'] ?? null,
+                                $fromId,
                                 fn (Builder $query, $engineId) => $query->where('engine_id', '>=', $engineId),
                             )
                             ->when(
-                                $data['engine_to'] ?? null,
+                                $toId,
                                 fn (Builder $query, $engineId) => $query->where('engine_id', '<=', $engineId),
                             );
                     })
@@ -228,31 +248,50 @@ class PartStoragesTable
                             })
                             ->optionsLimit(1000)
                             ->searchable()
+                            ->live()
+                            ->reactive()
+                            ->afterStateUpdated(function (callable $set, $state) {
+                                // Išvalyti "iki" jei jis mažesnis nei "nuo"
+                                $set('year_to', null);
+                            })
                             ->placeholder('Nuo '),
                         Select::make('year_to')
                             ->label('Metai iki')
-                            ->options(function () {
+                            ->options(function (callable $get) {
                                 $currentYear = now()->year;
                                 $startYear = 1900;
+                                $fromYear = $get('year_from');
+                                
                                 $years = [];
-                                for ($year = $currentYear + 1; $year >= $startYear; $year--) {
+                                $minYear = $fromYear ? max($fromYear, $startYear) : $startYear;
+                                
+                                for ($year = $currentYear + 1; $year >= $minYear; $year--) {
                                     $years[$year] = $year;
                                 }
                                 return $years;
                             })
                             ->optionsLimit(1000)
+                            ->disabled(fn (callable $get) => blank($get('year_from')))
                             ->searchable()
                             ->placeholder('Iki '),
                     ])
                     ->columns(2)
                     ->query(function (Builder $query, array $data): Builder {
+                        $fromYear = $data['year_from'] ?? null;
+                        $toYear = $data['year_to'] ?? null;
+                        
+                        // Jei "iki" mažesnė nei "nuo", ignoruoti "iki"
+                        if ($fromYear && $toYear && $toYear < $fromYear) {
+                            $toYear = null;
+                        }
+                        
                         return $query
                             ->when(
-                                $data['year_from'] ?? null,
+                                $fromYear,
                                 fn (Builder $query, $year) => $query->where('year', '>=', $year),
                             )
                             ->when(
-                                $data['year_to'] ?? null,
+                                $toYear,
                                 fn (Builder $query, $year) => $query->where('year', '<=', $year),
                             );
                     })
