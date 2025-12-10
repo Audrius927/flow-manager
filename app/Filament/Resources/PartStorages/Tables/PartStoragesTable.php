@@ -36,7 +36,7 @@ class PartStoragesTable
                     ->copyMessage('VIN kodas nukopijuotas')
                     ->copyMessageDuration(1500),
                 TextColumn::make('partCategory.title')
-                    ->label('Kategorija')
+                    ->label('Detalės kategorija')
                     ->badge()
                     ->color('primary')
                     ->searchable()
@@ -90,10 +90,10 @@ class PartStoragesTable
             ])
             ->filters([
                 Filter::make('part_category_id')
-                    ->label('Kategorija')
+                    ->label('Detalės kategorija')
                     ->form([
                         SelectTree::make('part_category_id')
-                            ->label('Kategorija')
+                            ->label('Detalės kategorija')
                             ->relationship('partCategory', 'title', 'parent_id')
                             ->searchable()
                             ->placeholder('Pasirinkite kategoriją'),

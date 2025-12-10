@@ -10,6 +10,7 @@ class CreatePartStorage extends CreateRecord
 {
     protected static string $resource = PartStorageResource::class;
 
+    protected static bool $canCreateAnother = false;
     protected array $imagesUploads = [];
 
     protected function mutateFormDataBeforeCreate(array $data): array

@@ -12,6 +12,7 @@
         "filament/filament": "4.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
+        "tapp/filament-google-autocomplete-field": "4.0",
         "watheqalshowaiter/filament-sticky-table-header": "^1.2"
     },
     "require-dev": {

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\DamageCases\Schemas;
 
+use App\Filament\Forms\Components\GoogleMapsAutocomplete;
 use App\Models\DamageCase;
 use App\Services\DamageCases\DamageCaseFieldPermissionResolver;
 use Filament\Forms\Components\DatePicker;
@@ -176,15 +177,17 @@ class DamageCaseForm
                             ->columnSpan(1)
                             ->visible($canView('received_location'))
                             ->disabled(fn () => ! $canEdit('received_location')),
-                        TextInput::make('received_location')
+                        GoogleMapsAutocomplete::make('received_location')
                             ->label('Perėmimo vieta (adresas)')
                             ->maxLength(255)
+                            ->placeholder('Pradėkite rašyti adresą...')
                             ->columnSpan(1)
                             ->visible($canView('received_location'))
                             ->disabled(fn () => ! $canEdit('received_location')),
-                        TextInput::make('storage_location')
+                        GoogleMapsAutocomplete::make('storage_location')
                             ->label('Saugojimo vieta')
                             ->maxLength(255)
+                            ->placeholder('Pradėkite rašyti adresą...')
                             ->columnSpan(1)
                             ->visible($canView('storage_location'))
                             ->disabled(fn () => ! $canEdit('storage_location')),

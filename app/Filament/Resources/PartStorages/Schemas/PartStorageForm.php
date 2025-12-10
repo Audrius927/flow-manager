@@ -19,51 +19,7 @@ class PartStorageForm
     {
         return $schema
             ->components([
-                Section::make('Detalės informacija')
-                    ->description('Pagrindiniai duomenys apie detalę sandėlyje')
-                    ->schema([
-                        TextInput::make('part_number')
-                            ->label('Detalės numeris')
-                            ->placeholder('PVZ: 7M3 123 456')
-                            ->maxLength(100)
-                            ->columnSpan(1),
-                        TextInput::make('vin_code')
-                            ->label('VIN kodas')
-                            ->placeholder('PVZ: WVWZZZ1JZXW000001')
-                            ->maxLength(50)
-                            ->columnSpan(1),
-
-                        TextInput::make('quantity')
-                            ->label('Kiekis')
-                            ->numeric()
-                            ->minValue(1)
-                            ->maxValue(999999)
-                            ->default(1)
-                            ->required()
-                            ->columnSpan(1),
-                        TextInput::make('year')
-                            ->label('Metai')
-                            ->numeric()
-                            ->minValue(1900)
-                            ->maxValue(now()->year + 1)
-                            ->placeholder('Pvz., 2018')
-                            ->columnSpan(1),
-                        SelectTree::make('part_category_id')
-                            ->label('Kategorija')
-                            ->relationship('partCategory', 'title', 'parent_id')
-                            ->searchable()
-                            ->required()
-                            ->placeholder('Pasirinkite kategoriją')
-                            ->columnSpan(2),
-                        Textarea::make('notes')
-                            ->label('Pastabos')
-                            ->rows(4)
-                            ->maxLength(500)
-                            ->columnSpanFull(),
-                    ])
-                    ->columns(2),
-                Section::make('Suderinamumas')
-                    ->description('Susiekite detalę su markėmis, modeliais ir parametrais')
+                Section::make('Automobilio detalės informacija')
                     ->schema([
                         Select::make('car_mark_filter')
                             ->label('Markė')
@@ -107,8 +63,52 @@ class PartStorageForm
                             ->relationship('bodyType', 'title')
                             ->searchable()
                             ->preload(),
+                        Select::make('year')
+                            ->label('Metai')
+                            ->options(function () {
+                                $currentYear = now()->year;
+                                $years = [];
+                                for ($year = 1900; $year <= $currentYear + 1; $year++) {
+                                    $years[$year] = $year;
+                                }
+                                return array_reverse($years, true);
+                            })
+                            ->searchable()
+                            ->placeholder('Pasirinkite metus'),
+                        TextInput::make('part_number')
+                            ->label('Detalės numeris')
+                            ->placeholder('PVZ: 7M3 123 456')
+                            ->maxLength(100),
+                        TextInput::make('vin_code')
+                            ->label('VIN kodas')
+                            ->placeholder('PVZ: WVWZZZ1JZXW000001')
+                            ->maxLength(50),
+                        SelectTree::make('part_category_id')
+                            ->label('Detalės kategorija')
+                            ->relationship('partCategory', 'title', 'parent_id')
+                            ->searchable()
+                            ->required()
+                            ->placeholder('Pasirinkite kategoriją'),
+                        TextInput::make('quantity')
+                            ->label('Kiekis')
+                            ->numeric()
+                            ->minValue(1)
+                            ->maxValue(999999)
+                            ->default(1)
+                            ->required(),
+                        Textarea::make('notes')
+                            ->label('Pastabos')
+                            ->rows(4)
+                            ->maxLength(500)
+                            ->columnSpanFull(),
                     ])
-                    ->columns(2),
+                    ->columns([
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 3,
+                        'xl' => 4,
+                    ])
+                    ->columnSpanFull(),
                 Section::make('Nuotraukos')
                     ->description('Detalės nuotraukos')
                     ->schema([
