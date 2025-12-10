@@ -28,14 +28,22 @@ class DamageCaseInfolist
                             ->copyable()
                             ->copyMessage('Gedimo numeris nukopijuotas')
                             ->visible($canView('damage_number')),
-                        TextEntry::make('insurance_company')
+                        TextEntry::make('insuranceCompany.title')
                             ->label('Draudimo kompanija')
                             ->badge()
                             ->color('gray')
                             ->placeholder('Nenurodyta')
                             ->visible($canView('insurance_company')),
-                        TextEntry::make('product')
+                        TextEntry::make('product.title')
                             ->label('Produktas')
+                            ->badge()
+                            ->color('gray')
+                            ->placeholder('Nenurodytas')
+                            ->visible($canView('product')),
+                        TextEntry::make('productSub.title')
+                            ->label('Subproduktas')
+                            ->badge()
+                            ->color('info')
                             ->placeholder('Nenurodytas')
                             ->visible($canView('product')),
                         TextEntry::make('order_date')
@@ -80,6 +88,12 @@ class DamageCaseInfolist
                             ->label('Tel nr.')
                             ->placeholder('Nenurodytas')
                             ->visible($canView('phone')),
+                        TextEntry::make('city.title')
+                            ->label('Miestas')
+                            ->badge()
+                            ->color('gray')
+                            ->placeholder('Nenurodytas')
+                            ->visible($canView('received_location')),
                         TextEntry::make('received_location')
                             ->label('Perėmimo vieta (adresas)')
                             ->placeholder('Nenurodyta')
@@ -105,8 +119,10 @@ class DamageCaseInfolist
                             ->date('Y-m-d')
                             ->placeholder('Nenurodyta')
                             ->visible($canView('returned_to_client_at')),
-                        TextEntry::make('repair_company')
+                        TextEntry::make('repairCompany.title')
                             ->label('Remonto įmonė')
+                            ->badge()
+                            ->color('gray')
                             ->placeholder('Nenurodyta')
                             ->visible($canView('repair_company')),
                         TextEntry::make('planned_repair_start')

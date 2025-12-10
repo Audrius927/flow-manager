@@ -13,6 +13,7 @@ return [
         'phone' => 'Tel nr.',
         'order_date' => 'Užsakymo data',
         'received_at' => 'Perėmimo data / laikas',
+        'city' => 'Miestas',
         'received_location' => 'Perėmimo vieta (adresas)',
         'storage_location' => 'Saugojimo vieta',
         'removed_from_storage_at' => 'Išvežtas iš saugojimo vietos (Data)',

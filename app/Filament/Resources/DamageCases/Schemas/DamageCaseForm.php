@@ -32,18 +32,65 @@ class DamageCaseForm
                             ->columnSpan(1)
                             ->visible($canView('damage_number'))
                             ->disabled(fn () => ! $canEdit('damage_number')),
-                        TextInput::make('insurance_company')
+                        Select::make('insurance_company_id')
                             ->label('Draudimo kompanija')
-                            ->maxLength(255)
+                            ->relationship('insuranceCompany', 'title')
+                            ->searchable()
+                            ->preload()
+                            ->placeholder('Pasirinkite draudimo kompaniją')
                             ->columnSpan(1)
                             ->visible($canView('insurance_company'))
                             ->disabled(fn () => ! $canEdit('insurance_company')),
-                        TextInput::make('product')
+                        Select::make('product_id')
                             ->label('Produktas')
-                            ->maxLength(255)
+                            ->options(function () {
+                                return \App\Models\Product::whereNull('parent_id')
+                                    ->orderBy('title')
+                                    ->pluck('title', 'id');
+                            })
+                            ->searchable()
+                            ->preload()
+                            ->placeholder('Pasirinkite produktą')
+                            ->live()
+                            ->reactive()
+                            ->afterStateUpdated(fn ($set) => $set('product_sub_id', null))
                             ->columnSpan(1)
                             ->visible($canView('product'))
                             ->disabled(fn () => ! $canEdit('product')),
+                        Select::make('product_sub_id')
+                            ->label('Transporto kategorija')
+                            ->options(function (callable $get) {
+                                $productId = $get('product_id');
+                                if (!$productId) {
+                                    return [];
+                                }
+                                
+                                $product = \App\Models\Product::find($productId);
+                                if (!$product || $product->title !== 'TRANSPORTAS') {
+                                    return [];
+                                }
+                                
+                                return \App\Models\Product::where('parent_id', $productId)
+                                    ->orderBy('title')
+                                    ->pluck('title', 'id');
+                            })
+                            ->searchable()
+                            ->preload()
+                            ->visible(function (callable $get) use ($canView) {
+                                if (!$canView('product')) {
+                                    return false;
+                                }
+                                $productId = $get('product_id');
+                                if (!$productId) {
+                                    return false;
+                                }
+                                $product = \App\Models\Product::find($productId);
+                                return $product && $product->title === 'TRANSPORTAS';
+                            })
+                            ->disabled(function (callable $get) use ($canEdit) {
+                                return !$canEdit('product');
+                            })
+                            ->columnSpan(1),
                         DatePicker::make('order_date')
                             ->label('Užsakymo data')
                             ->displayFormat('Y-m-d')
@@ -60,6 +107,7 @@ class DamageCaseForm
                         Select::make('car_mark_id')
                             ->label('Markė')
                             ->options(\App\Models\CarMark::pluck('title', 'id'))
+                            ->optionsLimit(1000)
                             ->searchable()
                             ->preload()
                             ->placeholder('Pasirinkite markę')
@@ -80,6 +128,7 @@ class DamageCaseForm
                                     ->get()
                                     ->mapWithKeys(fn ($model) => [$model->id => ($model->mark ? "{$model->mark->title} - {$model->title}" : $model->title)]);
                             })
+                            ->optionsLimit(1000)
                             ->searchable()
                             ->preload()
                             ->placeholder('Pirma pasirinkite markę')
@@ -118,6 +167,15 @@ class DamageCaseForm
                             ->columnSpan(1)
                             ->visible($canView('phone'))
                             ->disabled(fn () => ! $canEdit('phone')),
+                        Select::make('city_id')
+                            ->label('Miestas')
+                            ->relationship('city', 'title')
+                            ->searchable()
+                            ->preload()
+                            ->placeholder('Pasirinkite miestą')
+                            ->columnSpan(1)
+                            ->visible($canView('received_location'))
+                            ->disabled(fn () => ! $canEdit('received_location')),
                         TextInput::make('received_location')
                             ->label('Perėmimo vieta (adresas)')
                             ->maxLength(255)
@@ -148,9 +206,12 @@ class DamageCaseForm
                             ->columnSpan(1)
                             ->visible($canView('returned_to_client_at'))
                             ->disabled(fn () => ! $canEdit('returned_to_client_at')),
-                        TextInput::make('repair_company')
+                        Select::make('repair_company_id')
                             ->label('Remonto įmonė')
-                            ->maxLength(255)
+                            ->relationship('repairCompany', 'title')
+                            ->searchable()
+                            ->preload()
+                            ->placeholder('Pasirinkite remonto įmonę')
                             ->columnSpan(1)
                             ->visible($canView('repair_company'))
                             ->disabled(fn () => ! $canEdit('repair_company')),

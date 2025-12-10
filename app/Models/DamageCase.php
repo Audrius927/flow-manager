@@ -13,8 +13,9 @@ class DamageCase extends Model
     use HasFactory;
 
     protected $fillable = [
-        'insurance_company',
-        'product',
+        'insurance_company_id',
+        'product_id',
+        'product_sub_id',
         'damage_number',
         'car_mark_id',
         'car_model_id',
@@ -24,12 +25,13 @@ class DamageCase extends Model
         'phone',
         'order_date',
         'received_at',
+        'city_id',
         'received_location',
         'storage_location',
         'removed_from_storage_at',
         'returned_to_storage_at',
         'returned_to_client_at',
-        'repair_company',
+        'repair_company_id',
         'planned_repair_start',
         'planned_repair_end',
         'finished_at',
@@ -100,6 +102,46 @@ class DamageCase extends Model
     public function photos(): HasMany
     {
         return $this->hasMany(DamageCasePhoto::class);
+    }
+
+    /**
+     * Get the repair company associated with this damage case.
+     */
+    public function repairCompany(): BelongsTo
+    {
+        return $this->belongsTo(RepairCompany::class, 'repair_company_id');
+    }
+
+    /**
+     * Get the insurance company associated with this damage case.
+     */
+    public function insuranceCompany(): BelongsTo
+    {
+        return $this->belongsTo(InsuranceCompany::class, 'insurance_company_id');
+    }
+
+    /**
+     * Get the product associated with this damage case.
+     */
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    /**
+     * Get the subproduct associated with this damage case.
+     */
+    public function productSub(): BelongsTo
+    {
+        return $this->belongsTo(Product::class, 'product_sub_id');
+    }
+
+    /**
+     * Get the city associated with this damage case.
+     */
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'city_id');
     }
 }
 

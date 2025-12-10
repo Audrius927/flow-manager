@@ -33,13 +33,27 @@ class DamageCasesTable
                     ->searchable()
                     ->sortable()
                     ->visible($permissions->canViewField($user, 'damage_number')),
-                \Filament\Tables\Columns\TextColumn::make('insurance_company')
+                \Filament\Tables\Columns\TextColumn::make('insuranceCompany.title')
                     ->label('Draudimo kompanija')
+                    ->badge()
+                    ->color('gray')
                     ->searchable()
                     ->sortable()
                     ->visible($permissions->canViewField($user, 'insurance_company')),
-                \Filament\Tables\Columns\TextColumn::make('product')
+                \Filament\Tables\Columns\TextColumn::make('product.title')
                     ->label('Produktas')
+                    ->badge()
+                    ->color('gray')
+                    ->formatStateUsing(function ($record) {
+                        $product = $record->product?->title;
+                        $subProduct = $record->productSub?->title;
+                        
+                        if ($product && $subProduct) {
+                            return "{$product} - {$subProduct}";
+                        }
+                        
+                        return $product ?? '-';
+                    })
                     ->searchable()
                     ->sortable()
                     ->visible($permissions->canViewField($user, 'product')),
@@ -89,6 +103,13 @@ class DamageCasesTable
                     ->dateTime('Y-m-d H:i')
                     ->sortable()
                     ->visible($permissions->canViewField($user, 'received_at')),
+                \Filament\Tables\Columns\TextColumn::make('city.title')
+                    ->label('Miestas')
+                    ->badge()
+                    ->color('gray')
+                    ->searchable()
+                    ->sortable()
+                    ->visible($permissions->canViewField($user, 'received_location')),
                 \Filament\Tables\Columns\TextColumn::make('received_location')
                     ->label('Perėmimo vieta (adresas)')
                     ->searchable()
@@ -116,8 +137,10 @@ class DamageCasesTable
                     ->date('Y-m-d')
                     ->sortable()
                     ->visible($permissions->canViewField($user, 'returned_to_client_at')),
-                \Filament\Tables\Columns\TextColumn::make('repair_company')
+                \Filament\Tables\Columns\TextColumn::make('repairCompany.title')
                     ->label('Remonto įmonė')
+                    ->badge()
+                    ->color('gray')
                     ->searchable()
                     ->sortable()
                     ->visible($permissions->canViewField($user, 'repair_company')),

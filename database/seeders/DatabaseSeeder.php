@@ -4,8 +4,12 @@ namespace Database\Seeders;
 
 use App\Enums\SystemRole;
 use App\Models\User;
+use Database\Seeders\CitySeeder;
 use Database\Seeders\DamageCaseSeeder;
+use Database\Seeders\InsuranceCompanySeeder;
 use Database\Seeders\PartStorageSeeder;
+use Database\Seeders\ProductSeeder;
+use Database\Seeders\RepairCompanySeeder;
 use Database\Seeders\RolePermissionSeeder;
 use Hash;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -40,6 +44,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             RolePermissionSeeder::class,
+            InsuranceCompanySeeder::class,
+            RepairCompanySeeder::class,
+            ProductSeeder::class,
+            CitySeeder::class,
             PartStorageSeeder::class,
             DamageCaseSeeder::class,
         ]);

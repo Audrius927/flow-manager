@@ -208,7 +208,7 @@ table.fi-ta-table {
 .fi-ta-content-ctn .fi-ta-table thead {
     position: sticky !important;
     top: 0 !important;
-    z-index: 50 !important;
+    z-index: 10 !important;
     background-color: rgb(255, 255, 255) !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -220,7 +220,7 @@ table.fi-ta-table {
 .fi-ta-content-ctn .fi-ta-table thead tr {
     position: sticky !important;
     top: 0 !important;
-    z-index: 51 !important;
+    z-index: 11 !important;
     background-color: rgb(255, 255, 255) !important;
 }
 
@@ -232,7 +232,7 @@ table.fi-ta-table {
     position: sticky !important;
     top: 0 !important;
     background-color: rgb(255, 255, 255) !important;
-    z-index: 52 !important;
+    z-index: 12 !important;
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1) !important;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
@@ -242,12 +242,14 @@ table.fi-ta-table {
 .dark .fi-ta-ctn .fi-ta-table thead,
 .dark .fi-ta-content-ctn .fi-ta-table thead {
     background-color: rgb(24, 24, 27) !important;
+    z-index: 10 !important;
 }
 
 .dark .fi-ta-table thead tr,
 .dark .fi-ta-ctn .fi-ta-table thead tr,
 .dark .fi-ta-content-ctn .fi-ta-table thead tr {
     background-color: rgb(24, 24, 27) !important;
+    z-index: 11 !important;
 }
 
 .dark .fi-ta-table thead th,
@@ -256,6 +258,7 @@ table.fi-ta-table {
 .dark .fi-ta-content-ctn .fi-ta-table thead th {
     background-color: rgb(24, 24, 27) !important;
     border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+    z-index: 12 !important;
 }
 
 /* Užtikriname, kad table wrapper netrukdo sticky veikimui */
