@@ -38,12 +38,16 @@ class DamageCaseInfolist
                             ->label('Produktas')
                             ->badge()
                             ->color('gray')
-                            ->placeholder('Nenurodytas')
-                            ->visible($canView('product')),
-                        TextEntry::make('productSub.title')
-                            ->label('Subproduktas')
-                            ->badge()
-                            ->color('info')
+                            ->formatStateUsing(function ($record) {
+                                $product = $record->product?->title;
+                                $subProduct = $record->productSub?->title;
+                                
+                                if ($product && $subProduct) {
+                                    return "{$product} ({$subProduct})";
+                                }
+                                
+                                return $product ?? null;
+                            })
                             ->placeholder('Nenurodytas')
                             ->visible($canView('product')),
                         TextEntry::make('order_date')
