@@ -237,7 +237,12 @@ class DamageCaseForm
                             ->visible($canView('finished_at'))
                             ->disabled(fn () => ! $canEdit('finished_at')),
                     ])
-                    ->columns(4)
+                    ->columns([
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 3,
+                        'xl' => 4,
+                    ])
                     ->columnSpanFull(),
                 Section::make('Prisegti failai')
                     ->description('Dokumentai ir nuotraukos, susiję su žalos byla')

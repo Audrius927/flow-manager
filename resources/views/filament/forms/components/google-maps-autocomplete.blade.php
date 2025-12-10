@@ -67,6 +67,7 @@
                                 // Jei jau objektas, naudojame kaip yra
                                 options.componentRestrictions = this.componentRestrictions;
                             }
+
                         }
                         
                         this.autocomplete = new google.maps.places.Autocomplete(this.$refs.input, options);
@@ -114,11 +115,13 @@
                         // Uždarome dropdown, kai vartotojas paspaudžia už input lauko ir dropdown ribų
                         const handleOutsideClick = (e) => {
                             const pacContainer = document.querySelector('.pac-container');
+                            if (!pacContainer) return;
+                            
                             const isClickInsideInput = this.$refs.input && this.$refs.input.contains(e.target);
                             const isClickInsideDropdown = pacContainer && pacContainer.contains(e.target);
                             
                             // Jei paspaudė už input lauko ir dropdown ribų, uždaryti dropdown
-                            if (!isClickInsideInput && !isClickInsideDropdown && pacContainer) {
+                            if (!isClickInsideInput && !isClickInsideDropdown) {
                                 closeDropdown();
                             }
                         };
@@ -176,3 +179,4 @@
         </div>
     </x-filament::input.wrapper>
 </x-dynamic-component>
+
