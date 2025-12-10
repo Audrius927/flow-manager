@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('part_storages', function (Blueprint $table) {
             $table->id();
-            $table->string('part_number', 100)->nullable()->comment('Detalės numeris / artikulas');
+            $table->string('part_number', 100)->nullable()->comment('Detalės kodas');
             $table->foreignId('part_category_id')
                 ->constrained('part_categories')
                 ->cascadeOnDelete()

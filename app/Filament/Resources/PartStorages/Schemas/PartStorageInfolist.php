@@ -39,7 +39,7 @@ class PartStorageInfolist
                             ->color('warning')
                             ->placeholder('Nenurodyta'),
                         TextEntry::make('part_number')
-                            ->label('Detalės numeris')
+                            ->label('Detalės kodas')
                             ->placeholder('Nenurodytas'),
                         TextEntry::make('vin_code')
                             ->label('VIN kodas')

@@ -28,6 +28,11 @@ class PartStorageForm
                             ->preload()
                             ->reactive()
                             ->dehydrated(false)
+                            ->required()
+                            ->live()
+                            ->afterStateUpdated(function ($livewire, $component) {
+                                $livewire->validateOnly($component->getStatePath());
+                            })
                             ->afterStateHydrated(function (callable $set, ?PartStorageModel $record): void {
                                 if ($record?->carModel?->car_mark_id) {
                                     $set('car_mark_filter', $record->carModel->car_mark_id);
@@ -46,23 +51,46 @@ class PartStorageForm
                             })
                             ->disabled(fn(callable $get) => blank($get('car_mark_filter')))
                             ->searchable()
+                            ->required()
+                            ->live()
+                            ->afterStateUpdated(function ($livewire, $component) {
+                                $livewire->validateOnly($component->getStatePath());
+                            })
                             ->placeholder('Pasirinkite modelį'),
                         Select::make('engine_id')
                             ->label('Variklis')
                             ->relationship('engine', 'title')
                             ->optionsLimit(1000)
                             ->searchable()
-                            ->preload(),
+                            ->preload()
+                            ->required()
+                            ->live()
+                            ->afterStateUpdated(function ($livewire, $component) {
+                                $livewire->validateOnly($component->getStatePath());
+                            })
+                            ->placeholder('Pasirinkite'),
                         Select::make('fuel_type_id')
                             ->label('Kuro tipas')
                             ->relationship('fuelType', 'title')
                             ->searchable()
-                            ->preload(),
+                            ->preload()
+                            ->required()
+                            ->live()
+                            ->afterStateUpdated(function ($livewire, $component) {
+                                $livewire->validateOnly($component->getStatePath());
+                            })
+                            ->placeholder('Pasirinkite'),
                         Select::make('body_type_id')
                             ->label('Kėbulo tipas')
                             ->relationship('bodyType', 'title')
                             ->searchable()
-                            ->preload(),
+                            ->preload()
+                            ->required()
+                            ->live()
+                            ->afterStateUpdated(function ($livewire, $component) {
+                                $livewire->validateOnly($component->getStatePath());
+                            })
+                            ->placeholder('Pasirinkite'),
                         Select::make('year')
                             ->label('Metai')
                             ->options(function () {
@@ -74,11 +102,26 @@ class PartStorageForm
                                 return array_reverse($years, true);
                             })
                             ->searchable()
+                            ->required()
+                            ->live()
+                            ->afterStateUpdated(function ($livewire, $component) {
+                                $livewire->validateOnly($component->getStatePath());
+                            })
                             ->placeholder('Pasirinkite metus'),
                         TextInput::make('part_number')
-                            ->label('Detalės numeris')
+                            ->label('Detalės kodas')
                             ->placeholder('PVZ: 7M3 123 456')
-                            ->maxLength(100),
+                            ->maxLength(100)
+                            ->required()
+                            ->unique(table: PartStorageModel::class, column: 'part_number', ignorable: fn (?PartStorageModel $record) => $record)
+                            ->extraInputAttributes([
+                                'oninvalid' => "this.setCustomValidity('Įveskite detalės kodą')",
+                                'oninput' => "this.setCustomValidity('')",
+                            ])
+                            ->live()
+                            ->afterStateUpdated(function ($livewire, $component) {
+                                $livewire->validateOnly($component->getStatePath());
+                            }),
                         TextInput::make('vin_code')
                             ->label('VIN kodas')
                             ->placeholder('PVZ: WVWZZZ1JZXW000001')
@@ -88,6 +131,10 @@ class PartStorageForm
                             ->relationship('partCategory', 'title', 'parent_id')
                             ->searchable()
                             ->required()
+                            ->live()
+                            ->afterStateUpdated(function ($livewire, $component) {
+                                $livewire->validateOnly($component->getStatePath());
+                            })
                             ->placeholder('Pasirinkite kategoriją'),
                         TextInput::make('quantity')
                             ->label('Kiekis')
@@ -95,7 +142,11 @@ class PartStorageForm
                             ->minValue(1)
                             ->maxValue(999999)
                             ->default(1)
-                            ->required(),
+                            ->required()
+                            ->live()
+                            ->afterStateUpdated(function ($livewire, $component) {
+                                $livewire->validateOnly($component->getStatePath());
+                            }),
                         Textarea::make('notes')
                             ->label('Pastabos')
                             ->rows(4)

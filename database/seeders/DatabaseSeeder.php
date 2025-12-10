@@ -37,10 +37,15 @@ class DatabaseSeeder extends Seeder
         // Importuoti automobilių duomenis per konsolės komandą
         Artisan::call('auto-data:import');
 
-        User::factory()->count(20)->create([
-            'system_role' => SystemRole::User,
-            'password' => Hash::make('qwer'),
-        ]);
+        for ($i = 1; $i <= 20; $i++) {
+            User::create([
+                'name' => "vardas {$i} pavarde {$i}",
+                'email' => "vardas{$i}pavarde{$i}@example.com",
+                'password' => Hash::make('qwer'),
+                'system_role' => SystemRole::User,
+                'email_verified_at' => now(),
+            ]);
+        }
 
         $this->call([
             RolePermissionSeeder::class,

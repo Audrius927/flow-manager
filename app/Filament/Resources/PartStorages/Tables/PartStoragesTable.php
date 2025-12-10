@@ -25,7 +25,7 @@ class PartStoragesTable
         return $table
             ->columns([
                 TextColumn::make('part_number')
-                    ->label('Detalės numeris')
+                    ->label('Detalės kodas')
                     ->placeholder('Nenurodytas')
                     ->searchable()
                     ->sortable(),
