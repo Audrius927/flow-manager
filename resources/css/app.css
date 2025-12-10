@@ -9,3 +9,10 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* Filament Select dropdown option cursor pointer */
+.fi-fo-select [role="option"],
+.fi-fo-select [role="listbox"] [role="option"],
+.fi-fo-select .fi-select-option {
+    cursor: pointer !important;
+}

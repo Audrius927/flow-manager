@@ -149,19 +149,19 @@
             \Filament\Support\prepare_inherited_attributes($getExtraAttributeBag())
                 ->class(['fi-fo-google-maps-autocomplete'])
         "
-    >
-        <div
-            x-data="googleMapsAutocomplete({
-                apiKey: @js($apiKey),
+>
+    <div
+        x-data="googleMapsAutocomplete({
+            apiKey: @js($apiKey),
                 fieldId: @js($fieldId),
                 types: @js($types),
                 componentRestrictions: @js($componentRestrictions)
-            })"
-            data-google-autocomplete-id="{{ $fieldId }}"
-        >
-            <input
-                x-ref="input"
-                type="text"
+        })"
+        data-google-autocomplete-id="{{ $fieldId }}"
+    >
+        <input
+            x-ref="input"
+            type="text"
                 {{
                     $extraInputAttributes
                         ->merge([
@@ -175,8 +175,8 @@
                         ], escape: false)
                         ->class(['fi-input'])
                 }}
-            />
-        </div>
+        />
+    </div>
     </x-filament::input.wrapper>
 </x-dynamic-component>
 

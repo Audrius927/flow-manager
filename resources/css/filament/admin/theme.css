@@ -61,7 +61,27 @@
     
     /* Improved select dropdowns */
     .fi-select-option {
-        @apply transition-colors duration-150;
+        @apply transition-colors duration-150 cursor-pointer;
+    }
+    
+    /* Select dropdown option cursor pointer and hover color */
+    .fi-fo-select [role="option"],
+    .fi-fo-select [role="listbox"] [role="option"],
+    .fi-fo-select .fi-select-option,
+    .fi-fo-select .fi-select-option-item {
+        @apply cursor-pointer;
+    }
+    
+    .fi-fo-select [role="option"]:hover,
+    .fi-fo-select [role="listbox"] [role="option"]:hover,
+    .fi-fo-select .fi-select-option:hover,
+    .fi-fo-select .fi-select-option-item:hover {
+        @apply bg-emerald-50 dark:bg-emerald-500/10;
+    }
+    
+    .fi-fo-select [role="option"][aria-selected="true"],
+    .fi-fo-select [role="listbox"] [role="option"][aria-selected="true"] {
+        @apply bg-emerald-100 dark:bg-emerald-500/20;
     }
     
     /* Better focus states for interactive elements */
