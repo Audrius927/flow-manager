@@ -48,7 +48,7 @@ class PartStorageSeeder extends Seeder
                 'year' => $faker->numberBetween(2000, now()->year + 1),
                 'quantity' => $faker->numberBetween(1, 25),
                 'vin_code' => $faker->optional()->regexify('[A-HJ-NPR-Z0-9]{17}'),
-                'notes' => $faker->optional()->sentence(),
+                'notes' => null,
                 'created_at' => $now,
                 'updated_at' => $now,
             ];
